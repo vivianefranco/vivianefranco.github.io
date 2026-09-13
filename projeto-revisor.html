@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revisor Automático de Textos com IA | Viviane Franco</title>
+    <title>DocuMind AI - Revisor Inteligente de Documentos | Viviane Franco</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
@@ -15,6 +15,7 @@
             --light: #fffffe;
             --mid: #eee8e0;
             --code-bg: #1a1825;
+            --success: #28c840;
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -121,7 +122,7 @@
         }
         .screenshot-frame {
             border: 1px solid rgba(15,14,23,0.12);
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 20px 40px -10px rgba(15,14,23,0.15);
             background: var(--light);
@@ -140,7 +141,7 @@
         .dot:nth-child(3) { background: #28c840; }
         .screenshot-wrap img { width: 100%; height: auto; display: block; }
         .screenshot-placeholder {
-            width: 100%; height: 320px;
+            width: 100%; height: 400px;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             display: flex; align-items: center; justify-content: center;
             color: rgba(255,255,255,0.3); font-family: 'DM Mono', monospace; font-size: 0.85rem;
@@ -171,7 +172,7 @@
             animation: fadeUp 0.7s 0.4s ease both;
         }
 
-        /* ── CHALLENGE SECTION (NOVO) ── */
+        /* ── CHALLENGE SECTION ── */
         .challenge-section {
             background: var(--light);
             border: 1px solid var(--mid);
@@ -196,7 +197,7 @@
         }
         .challenge-item p { font-size: 0.95rem; color: #4a4860; line-height: 1.6; }
 
-        /* ── CODE SNIPPET (NOVO) ── */
+        /* ── CODE SNIPPET ── */
         .code-block {
             background: var(--code-bg);
             border-radius: 8px;
@@ -243,6 +244,44 @@
             font-family: 'DM Mono', monospace; font-size: 0.78rem;
             padding: 0.4rem 0.85rem; border: 1px solid var(--ink);
             border-radius: 4px; background: transparent; color: var(--ink);
+        }
+
+        /* ── FEATURES GRID ── */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 4rem;
+            animation: fadeUp 0.7s 0.65s ease both;
+        }
+        .feature-card {
+            background: var(--light);
+            border: 1px solid var(--mid);
+            border-radius: 6px;
+            padding: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 4px 4px 0 var(--ink);
+        }
+        .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+        .feature-card h3 {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        .feature-card p {
+            font-size: 0.92rem;
+            line-height: 1.6;
+            color: #4a4860;
         }
 
         /* ── RESULTS ── */
@@ -306,10 +345,11 @@
 <header>
     <div class="header-top">
         <div>
-            <div class="header-tag">Case Study · Engenharia de Software & IA</div>
-            <h1>Revisor de textos <em>inteligente</em> e estruturado</h1>
+            <div class="header-tag">Aplicação Web · Streamlit + Qwen API</div>
+            <h1>DocuMind <em>AI</em></h1>
             <p class="header-sub">
-                Um pipeline em Python que alia processamento de linguagem natural (NLP) à manipulação avançada de documentos, resolvendo o problema de perda de formatação em revisões de textos longos via LLMs.
+                Revisor gramatical e de estilo para documentos corporativos e acadêmicos em .docx. 
+                Interface interativa em Streamlit alimentada pelo modelo Qwen 3.7 Plus (Alibaba Cloud).
             </p>
         </div>
         <a href="https://github.com/vivianefranco" target="_blank" class="btn-github">
@@ -327,84 +367,129 @@
             <div class="screenshot-bar">
                 <div class="dot"></div><div class="dot"></div><div class="dot"></div>
             </div>
-            <!-- Substitua pelo print real do seu projeto -->
-            <img src="images/print_revisor.png" alt="Interface do Revisor de Textos"
+            <img src="images/documind-screenshot.png" alt="Interface do DocuMind AI em execução"
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="screenshot-placeholder">[ Insira aqui o screenshot da interface Streamlit ou do terminal ]</div>
+            <div class="screenshot-placeholder">[ Insira o screenshot da interface Streamlit ]</div>
         </div>
     </div>
 
     <!-- INTRO -->
     <p class="intro-text">
-        Desenvolvi este sistema para resolver uma dor real: ferramentas de IA genéricas destroem a formatação de documentos longos (.docx) e perdem o contexto em textos extensos. Este projeto une <strong>rigor linguístico</strong> (minha base em educação) com <strong>engenharia de software robusta</strong> (minha atuação atual), entregando um arquivo final pronto para uso, com estrutura preservada e qualidade editorial garantida.
+        Desenvolvi uma aplicação web interativa que automatiza a revisão gramatical e de estilo de documentos Word (.docx). 
+        A solução combina uma interface amigável construída em <strong>Streamlit</strong> com o poder do modelo 
+        <strong>Qwen 3.7 Plus</strong> da Alibaba Cloud, processando parágrafo por parágrafo para preservar a formatação 
+        original do documento enquanto aplica melhorias de clareza, coesão e correção gramatical.
     </p>
 
-    <!-- DESAFIO TÉCNICO (O que impressiona recrutadores) -->
+    <!-- FEATURES -->
+    <div class="features-grid">
+        <div class="feature-card">
+            <span class="feature-icon"></span>
+            <h3>Upload de .docx</h3>
+            <p>Interface drag-and-drop para upload de documentos Word, com suporte a arquivos de até 200MB.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">🤖</span>
+            <h3>Qwen 3.7 Plus</h3>
+            <p>Utilização do modelo de linguagem avançado da Alibaba Cloud via API compatível com OpenAI.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">✍️</span>
+            <h3>Preservação de Formatação</h3>
+            <p>Algoritmo que mantém a estrutura de parágrafos, títulos e formatação implícita do documento original.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">📊</span>
+            <h3>Progresso em Tempo Real</h3>
+            <p>Barra de progresso e feedback visual mostrando o processamento parágrafo por parágrafo.</p>
+        </div>
+    </div>
+
+    <!-- CHALLENGE SECTION -->
     <div class="challenge-section">
-        <h2 class="section-title">O Desafio Técnico</h2>
+        <h2 class="section-title">Desafios Técnicos Resolvidos</h2>
         <div class="challenge-grid">
             <div class="challenge-item">
-                <h4>01. Limite de Contexto das LLMs</h4>
-                <p>Documentos acadêmicos ou corporativos frequentemente excedem o limite de tokens. Solucionei isso implementando um algoritmo de <em>chunking</em> inteligente, que divide o texto por parágrafos ou seções lógicas, mantendo o contexto entre as chamadas da API.</p>
+                <h4>01. Manipulação de DOCX</h4>
+                <p>A biblioteca <code>python-docx</code> exige manipulação cuidadosa dos objetos <code>paragraph.runs</code> para preservar formatação. Implementei lógica para substituir o texto mantendo negritos, itálicos e estilos intactos.</p>
             </div>
             <div class="challenge-item">
-                <h4>02. Preservação de Formatação</h4>
-                <p>LLMs retornam texto puro (Markdown/HTML), destruindo negritos, estilos de título e listas do Word. Utilizei a biblioteca <code>python-docx</code> para mapear os nós XML do documento original, aplicando as revisões da IA de volta ao arquivo sem perder a estrutura visual.</p>
+                <h4>02. Processamento Sequencial</h4>
+                <p>Para evitar perda de contexto e estourar limites de tokens, o documento é processado parágrafo por parágrafo, com controle de taxa de requisição e tratamento de erros individual por bloco de texto.</p>
+            </div>
+            <div class="challenge-item">
+                <h4>03. Integração API Qwen</h4>
+                <p>Configuração do endpoint específico do workspace Alibaba Cloud (maas.aliyuncs.com) com autenticação via API Key e validação de conexão antes do processamento em massa.</p>
+            </div>
+            <div class="challenge-item">
+                <h4>04. Interface Interativa</h4>
+                <p>Streamlit permite criar uma UI funcional com upload de arquivos, barra de progresso dinâmica, feedback de status e botão de download do documento processado — tudo em poucas linhas de código Python.</p>
             </div>
         </div>
     </div>
 
-    <!-- CODE SNIPPET (Prova social técnica) -->
+    <!-- CODE SNIPPET -->
     <div class="code-block">
         <div class="code-header">
-            <span class="code-lang">Python · Lógica de Reconstrução do DOCX</span>
+            <span class="code-lang">Python · Função de Revisão com Qwen API</span>
         </div>
         <div class="code-content">
-<span class="keyword">def</span> <span class="function">aplicar_revisao_ao_documento</span>(caminho_original, texto_revisado):
-    <span class="comment"># Carrega o documento original para preservar estilos e metadados</span>
-    doc = Document(caminho_original)
-    
-    <span class="comment"># Itera sobre os parágrafos, substituindo o conteúdo</span>
-    <span class="comment"># mantendo a formatação (runs) intacta</span>
-    <span class="keyword">for</span> i, para <span class="keyword">in</span> enumerate(doc.paragraphs):
-        <span class="keyword">if</span> para.text.strip():
-            para.text = texto_revisado[i] <span class="comment"># Texto processado pela IA</span>
-            
-    doc.save(<span class="string">"documento_revisado_final.docx"</span>)
-    <span class="keyword">return</span> <span class="string">"Sucesso na reconstrução"</span>
+<span class="keyword">def</span> <span class="function">revisar_texto</span>(client, texto):
+    prompt = <span class="string">f"""Você é um revisor profissional de textos corporativos e acadêmicos.
+Sua tarefa é revisar o texto abaixo, corrigindo gramática, ortografia e melhorando clareza.
+
+REGRAS ESTRITAS:
+1. Responda APENAS com o texto revisado
+2. Mantenha a estrutura de parágrafos exatamente como no original
+3. Preserve formatação implícita (títulos, listas)
+
+TEXTO ORIGINAL:
+---
+</span>{texto}<span class="string">
+---
+
+TEXTO REVISADO:"""</span>
+
+    response = client.chat.completions.create(
+        model=<span class="string">"qwen3.7-plus"</span>,
+        messages=[{<span class="string">"role"</span>: <span class="string">"user"</span>, <span class="string">"content"</span>: prompt}],
+        temperature=<span class="keyword">0.3</span>,
+        max_tokens=<span class="keyword">4000</span>
+    )
+    <span class="keyword">return</span> response.choices[<span class="keyword">0</span>].message.content.strip()
         </div>
     </div>
 
-    <!-- FLUXO -->
+    <!-- FLOW -->
     <div class="flow-section">
-        <h2 class="section-title">Arquitetura da Solução</h2>
+        <h2 class="section-title">Fluxo de Processamento</h2>
         <div class="flow-steps">
             <div class="flow-step">
                 <div class="flow-num">1</div>
                 <div class="flow-content">
-                    <h4>Ingestão e Validação</h4>
-                    <p>O usuário faz o upload do `.docx`. O sistema valida o tipo de arquivo e extrai o texto bruto, mapeando a estrutura original (títulos, parágrafos, listas).</p>
+                    <h4>Upload e Validação</h4>
+                    <p>O usuário faz upload do arquivo .docx via interface Streamlit. O sistema valida o tipo e tamanho do arquivo.</p>
                 </div>
             </div>
             <div class="flow-step">
                 <div class="flow-num">2</div>
                 <div class="flow-content">
-                    <h4>Configuração do Prompt (System Message)</h4>
-                    <p>O sistema injeta dinamicamente os critérios de revisão (ex: "tom acadêmico", "foco em coesão") no prompt da API, atuando como um "revisor sênior" especializado.</p>
+                    <h4>Configuração da API</h4>
+                    <p>O usuário insere a API Key da Alibaba Cloud. O sistema testa a conexão com o endpoint do Qwen 3.7 Plus antes de iniciar.</p>
                 </div>
             </div>
             <div class="flow-step">
                 <div class="flow-num">3</div>
                 <div class="flow-content">
-                    <h4>Processamento em Lotes (Chunking)</h4>
-                    <p>O texto é dividido em blocos gerenciáveis. Cada bloco é enviado à API (GPT-4o-mini) com controle de taxa de requisição (rate limiting) para evitar erros.</p>
+                    <h4>Processamento Parágrafo a Parágrafo</h4>
+                    <p>O documento é lido com <code>python-docx</code>. Cada parágrafo com mais de 15 caracteres é enviado à API para revisão, mantendo os <code>runs</code> de formatação.</p>
                 </div>
             </div>
             <div class="flow-step">
                 <div class="flow-num">4</div>
                 <div class="flow-content">
-                    <h4>Reconstrução e Exportação</h4>
-                    <p>O Python remonta o documento `.docx`, injetando o texto revisado nos nós de formatação originais, e disponibiliza o link para download imediato.</p>
+                    <h4>Reconstrução e Download</h4>
+                    <p>O documento revisado é salvo em um <code>BytesIO</code> e disponibilizado para download imediato, preservando toda a estrutura original.</p>
                 </div>
             </div>
         </div>
@@ -415,27 +500,30 @@
         <h2 class="section-title">Stack Tecnológico</h2>
         <div class="tech-categories">
             <div>
-                <div class="tech-cat-title">Backend & Lógica</div>
+                <div class="tech-cat-title">Backend & Processamento</div>
                 <div class="tech-tags">
-                    <span class="tech-tag">Python 3.10+</span>
+                    <span class="tech-tag">Python 3.x</span>
                     <span class="tech-tag">python-docx</span>
-                    <span class="tech-tag">Regex</span>
+                    <span class="tech-tag">io.BytesIO</span>
+                    <span class="tech-tag">time (controle de rate)</span>
                 </div>
             </div>
             <div>
                 <div class="tech-cat-title">Inteligência Artificial</div>
                 <div class="tech-tags">
-                    <span class="tech-tag">OpenAI API</span>
-                    <span class="tech-tag">GPT-4o-mini</span>
+                    <span class="tech-tag">Qwen 3.7 Plus</span>
+                    <span class="tech-tag">Alibaba Cloud (DashScope)</span>
+                    <span class="tech-tag">OpenAI SDK (compatível)</span>
                     <span class="tech-tag">Prompt Engineering</span>
-                    <span class="tech-tag">Text Chunking</span>
                 </div>
             </div>
             <div>
-                <div class="tech-cat-title">Interface & Deploy</div>
+                <div class="tech-cat-title">Interface & UX</div>
                 <div class="tech-tags">
                     <span class="tech-tag">Streamlit</span>
-                    <span class="tech-tag">Git / GitHub</span>
+                    <span class="tech-tag">st.progress</span>
+                    <span class="tech-tag">st.file_uploader</span>
+                    <span class="tech-tag">st.download_button</span>
                 </div>
             </div>
         </div>
@@ -443,27 +531,27 @@
 
     <!-- RESULTS -->
     <div class="results-section">
-        <h2 class="section-title">Resultados e Impacto</h2>
+        <h2 class="section-title">Resultados e Métricas</h2>
         <div class="results-grid">
             <div class="result-card">
-                <span class="result-number">~90%</span>
-                <span class="result-label">Redução no tempo de revisão manual de documentos longos</span>
+                <span class="result-number">~51</span>
+                <span class="result-label">Parágrafos processados em documento de teste (Artigo ABED 2025)</span>
             </div>
             <div class="result-card">
                 <span class="result-number">100%</span>
-                <span class="result-label">Preservação da estrutura original (negrito, itálico, listas)</span>
+                <span class="result-label">Preservação da estrutura de formatação do DOCX original</span>
             </div>
             <div class="result-card">
-                <span class="result-number">Modular</span>
-                <span class="result-label">Código preparado para troca fácil de modelos (ex: migrar para Claude ou Llama)</span>
+                <span class="result-number">200MB</span>
+                <span class="result-label">Limite máximo de arquivo suportado por upload</span>
             </div>
         </div>
     </div>
 
     <!-- CTA FINAL -->
     <div class="cta-box">
-        <h3>Interessado em como posso aplicar isso no seu time?</h3>
-        <p>Estou buscando oportunidades para aplicar minha combinação única de rigor linguístico e engenharia de software em projetos de IA e automação.</p>
+        <h3>Interessado em automatizar revisão de documentos?</h3>
+        <p>Este projeto demonstra minha capacidade de integrar APIs de IA de ponta com manipulação avançada de documentos e criação de interfaces funcionais em Python.</p>
         <a href="mailto:vivianefrancodasilva@gmail.com" class="btn-primary">Vamos conversar sobre este projeto</a>
     </div>
 
