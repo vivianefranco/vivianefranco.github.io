@@ -287,18 +287,23 @@
         /* ── RESULTS ── */
         .results-section { margin-bottom: 5rem; animation: fadeUp 0.7s 0.75s ease both; }
         .results-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 1.5rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;
         }
         .result-card {
             background: var(--light); border: 1px solid var(--mid); border-radius: 8px;
-            padding: 2rem 1.5rem; text-align: center; transition: transform 0.3s;
+            padding: 2rem 1.5rem; text-align: left; transition: transform 0.3s;
+            display: flex; flex-direction: column; justify-content: space-between;
         }
         .result-card:hover { transform: translateY(-4px); border-color: var(--accent); }
-        .result-number {
-            font-family: 'DM Serif Display', serif; font-size: 2.5rem;
-            color: var(--accent); line-height: 1; display: block; margin-bottom: 0.5rem;
+        .result-header {
+            font-family: 'DM Mono', monospace; font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.5rem;
         }
-        .result-label { font-size: 0.85rem; color: #4a4860; font-weight: 500; line-height: 1.4; }
+        .result-number {
+            font-family: 'DM Serif Display', serif; font-size: 2.2rem;
+            color: var(--ink); line-height: 1.1; display: block; margin-bottom: 0.75rem;
+        }
+        .result-label { font-size: 0.9rem; color: #4a4860; font-weight: 400; line-height: 1.5; }
 
         /* ── NAV / CTA ── */
         .nav-row {
@@ -384,7 +389,7 @@
     <!-- FEATURES -->
     <div class="features-grid">
         <div class="feature-card">
-            <span class="feature-icon"></span>
+            <span class="feature-icon">📂</span>
             <h3>Upload de .docx</h3>
             <p>Interface drag-and-drop para upload de documentos Word, com suporte a arquivos de até 200MB.</p>
         </div>
@@ -529,29 +534,38 @@ TEXTO REVISADO:"""</span>
         </div>
     </div>
 
-    <!-- RESULTS -->
+    <!-- RESULTS / IMPACT -->
     <div class="results-section">
-        <h2 class="section-title">Resultados e Métricas</h2>
+        <h2 class="section-title">Ecossistema de IA & Impacto de Negócio</h2>
         <div class="results-grid">
             <div class="result-card">
-                <span class="result-number">~51</span>
-                <span class="result-label">Parágrafos processados em documento de teste (Artigo ABED 2025)</span>
+                <div>
+                    <div class="result-header">Ferramenta 01</div>
+                    <span class="result-number">-97%</span>
+                    <span class="result-label"><strong>Transcrição de Vídeo p/ Apostila:</strong> Redução drástica no tempo de elaboração de 40 dias para apenas 1 dia, gerando alta eficiência operacional.</span>
+                </div>
             </div>
             <div class="result-card">
-                <span class="result-number">100%</span>
-                <span class="result-label">Preservação da estrutura de formatação do DOCX original</span>
+                <div>
+                    <div class="result-header">Ferramenta 02 (DocuMind)</div>
+                    <span class="result-number">-99,9%</span>
+                    <span class="result-label"><strong>Revisor RAG de Textos (+100 pgs):</strong> Eliminação de custos externos de revisão, encolhendo o tempo de 3 dias para 10 minutos por apostila.</span>
+                </div>
             </div>
             <div class="result-card">
-                <span class="result-number">200MB</span>
-                <span class="result-label">Limite máximo de arquivo suportado por upload</span>
+                <div>
+                    <div class="result-header">Ferramenta 03</div>
+                    <span class="result-number">-95%</span>
+                    <span class="result-label"><strong>Gerador de Questões:</strong> Adaptação pedagógica institucional automatizada, reduzindo o ciclo de criação de 10 dias para 30 minutos.</span>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- CTA FINAL -->
     <div class="cta-box">
-        <h3>Interessado em automatizar revisão de documentos?</h3>
-        <p>Este projeto demonstra minha capacidade de integrar APIs de IA de ponta com manipulação avançada de documentos e criação de interfaces funcionais em Python.</p>
+        <h3>Interessado em automatizar processos educacionais?</h3>
+        <p>Este projeto demonstra minha capacidade de integrar APIs de IA de ponta com manipulação avançada de documentos e criação de ecossistemas educacionais eficientes em Python.</p>
         <a href="mailto:vivianefrancodasilva@gmail.com" class="btn-primary">Vamos conversar sobre este projeto</a>
     </div>
 
