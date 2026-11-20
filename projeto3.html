@@ -1,577 +1,71 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Questões com IA | Viviane Franco</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235b2d82'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='30' fill='%23d4a853'%3EVF%3C/text%3E%3C/svg%3E">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --ink: #0f0e17;
-            --paper: #f9f4ef;
-            --accent: #e8643c;
-            --muted: #a7a9be;
-            --light: #fffffe;
-            --mid: #eee8e0;
-        }
-
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: 'Lato', sans-serif;
-            background: var(--paper);
-            color: var(--ink);
-            min-height: 100vh;
-        }
-
-        /* ── HEADER ── */
-        header {
-            position: relative;
-            padding: 5rem 2rem 6rem;
-            overflow: hidden;
-            background: var(--ink);
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.04) 39px, rgba(255,255,255,0.04) 40px),
-                repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.04) 39px, rgba(255,255,255,0.04) 40px);
-        }
-
-        .header-tag {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--accent);
-            display: inline-block;
-            border: 1px solid var(--accent);
-            padding: 0.25rem 0.75rem;
-            border-radius: 2px;
-            margin-bottom: 1.5rem;
-            position: relative;
-            animation: fadeUp 0.6s ease both;
-        }
-
-        h1 {
-            font-family: 'DM Serif Display', serif;
-            font-size: clamp(2.4rem, 6vw, 4.5rem);
-            color: var(--light);
-            line-height: 1.1;
-            max-width: 700px;
-            position: relative;
-            animation: fadeUp 0.6s 0.1s ease both;
-        }
-
-        h1 em {
-            font-style: italic;
-            color: var(--accent);
-        }
-
-        .header-sub {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.85rem;
-            color: var(--muted);
-            margin-top: 1.5rem;
-            position: relative;
-            animation: fadeUp 0.6s 0.2s ease both;
-            letter-spacing: 0.05em;
-        }
-
-        .header-decoration {
-            position: absolute;
-            right: 5%;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 220px;
-            height: 220px;
-            opacity: 0.07;
-            animation: spin 30s linear infinite;
-        }
-
-        /* ── MAIN CONTAINER ── */
-        .container {
-            max-width: 860px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
-
-        /* ── SCREENSHOT BLOCK ── */
-        .screenshot-wrap {
-            position: relative;
-            margin-bottom: 4rem;
-            animation: fadeUp 0.7s 0.3s ease both;
-        }
-
-        .screenshot-label {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.7rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--muted);
-            margin-bottom: 0.75rem;
-        }
-
-        .screenshot-frame {
-            border: 1px solid rgba(15,14,23,0.12);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 8px 8px 0px var(--ink);
-            background: var(--light);
-        }
-
-        .screenshot-bar {
-            background: var(--ink);
-            height: 32px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 0 14px;
-        }
-
-        .dot {
-            width: 10px; height: 10px;
-            border-radius: 50%;
-            background: var(--muted);
-            opacity: 0.4;
-        }
-        .dot:nth-child(1) { background: #ff5f57; opacity: 1; }
-        .dot:nth-child(2) { background: #ffbd2e; opacity: 1; }
-        .dot:nth-child(3) { background: #28c840; opacity: 1; }
-
-        .screenshot-wrap img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .screenshot-placeholder {
-            width: 100%;
-            height: 280px;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255,255,255,0.2);
-            font-family: 'DM Mono', monospace;
-            font-size: 0.85rem;
-            letter-spacing: 0.1em;
-        }
-
-        /* ── SECTION INTRO ── */
-        .intro-text {
-            font-size: 1.2rem;
-            line-height: 1.85;
-            color: #2d2b3d;
-            font-weight: 300;
-            margin-bottom: 3.5rem;
-            border-left: 3px solid var(--accent);
-            padding-left: 1.5rem;
-            animation: fadeUp 0.7s 0.4s ease both;
-        }
-
-        /* ── SECTION TITLE ── */
-        .section-title {
-            font-family: 'DM Serif Display', serif;
-            font-size: 1.6rem;
-            margin-bottom: 1.5rem;
-            color: var(--ink);
-        }
-
-        /* ── FEATURE GRID ── */
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
-            gap: 1.25rem;
-            margin-bottom: 4rem;
-            animation: fadeUp 0.7s 0.5s ease both;
-        }
-
-        .feature-card {
-            background: var(--light);
-            border: 1px solid var(--mid);
-            border-radius: 6px;
-            padding: 1.5rem;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 4px 4px 0 var(--ink);
-        }
-
-        .feature-icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.75rem;
-            display: block;
-        }
-
-        .feature-card h3 {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
-
-        .feature-card p {
-            font-size: 0.92rem;
-            line-height: 1.6;
-            color: #4a4860;
-        }
-
-        /* ── BLOOM SECTION ── */
-        .bloom-section {
-            background: var(--ink);
-            color: var(--light);
-            border-radius: 8px;
-            padding: 2.5rem;
-            margin-bottom: 4rem;
-            animation: fadeUp 0.7s 0.6s ease both;
-        }
-
-        .bloom-section .section-title {
-            color: var(--light);
-            margin-bottom: 0.5rem;
-        }
-
-        .bloom-intro {
-            color: var(--muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.75rem;
-        }
-
-        .bloom-levels {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-        }
-
-        .bloom-level {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .bloom-bar-wrap {
-            flex: 1;
-            height: 28px;
-            background: rgba(255,255,255,0.06);
-            border-radius: 3px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .bloom-bar {
-            height: 100%;
-            background: var(--accent);
-            border-radius: 3px;
-            display: flex;
-            align-items: center;
-            padding-left: 0.75rem;
-            font-family: 'DM Mono', monospace;
-            font-size: 0.72rem;
-            letter-spacing: 0.08em;
-            color: var(--light);
-            transform-origin: left;
-            animation: growBar 1s 0.9s ease both;
-        }
-
-        .bloom-level-num {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--muted);
-            width: 12px;
-            text-align: center;
-        }
-
-        @keyframes growBar {
-            from { transform: scaleX(0); }
-            to { transform: scaleX(1); }
-        }
-
-        /* ── TECH STACK ── */
-        .tech-section {
-            margin-bottom: 4rem;
-            animation: fadeUp 0.7s 0.7s ease both;
-        }
-
-        .tech-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-            margin-top: 1rem;
-        }
-
-        .tech-tag {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.78rem;
-            letter-spacing: 0.08em;
-            padding: 0.35rem 0.85rem;
-            border: 1.5px solid var(--ink);
-            border-radius: 2px;
-            background: transparent;
-            transition: background 0.2s, color 0.2s;
-            cursor: default;
-        }
-
-        .tech-tag:hover {
-            background: var(--ink);
-            color: var(--light);
-        }
-
-        /* ── RESULTS ── */
-        .results-section {
-            margin-bottom: 4rem;
-            animation: fadeUp 0.7s 0.75s ease both;
-        }
-
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .result-card {
-            background: var(--light);
-            border: 1px solid var(--mid);
-            border-radius: 6px;
-            padding: 1.5rem 1rem;
-            text-align: center;
-        }
-
-        .result-number {
-            font-family: 'DM Serif Display', serif;
-            font-size: 2.8rem;
-            color: var(--accent);
-            line-height: 1;
-            display: block;
-        }
-
-        .result-label {
-            font-size: 0.82rem;
-            color: var(--muted);
-            margin-top: 0.4rem;
-            line-height: 1.4;
-        }
-
-        /* ── BACK BUTTON ── */
-        .nav-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 2rem;
-            border-top: 1px solid var(--mid);
-            animation: fadeUp 0.7s 0.85s ease both;
-        }
-
-        .back-button {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.82rem;
-            letter-spacing: 0.08em;
-            color: var(--ink);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            border-bottom: 1px solid currentColor;
-            padding-bottom: 2px;
-            transition: color 0.2s;
-        }
-
-        .back-button:hover { color: var(--accent); }
-
-        .github-link {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.82rem;
-            letter-spacing: 0.08em;
-            color: var(--light);
-            background: var(--ink);
-            text-decoration: none;
-            padding: 0.5rem 1.25rem;
-            border-radius: 3px;
-            transition: background 0.2s;
-        }
-
-        .github-link:hover { background: var(--accent); }
-
-        /* ── ANIMATIONS ── */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(18px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes spin {
-            to { transform: translateY(-50%) rotate(360deg); }
-        }
-
-        /* ── RESPONSIVE ── */
-        @media (max-width: 600px) {
-            .results-grid { grid-template-columns: 1fr; }
-            .header-decoration { display: none; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gerador de questões com IA | Viviane Franco</title>
+<meta name="description" content="Um sistema que cria questões de múltipla escolha a partir do conteúdo do curso, seguindo os padrões da instituição e os níveis da Taxonomia de Bloom.">
+<meta name="author" content="Viviane Franco">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Gerador de questões com IA | Viviane Franco">
+<meta property="og:description" content="Um sistema que cria questões de múltipla escolha a partir do conteúdo do curso, seguindo os padrões da instituição e os níveis da Taxonomia de Bloom.">
+<meta property="og:url" content="https://vivianefranco.github.io/projeto3.html">
+<meta property="og:image" content="https://vivianefranco.github.io/images/ciaed-palco.jpg">
+<meta name="theme-color" content="#23204a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2323204a'/%3E%3Ctext x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial,sans-serif' font-weight='700' font-size='30' fill='%23ffffff'%3EVF%3C/text%3E%3Cpath d='M12 50 L52 46' stroke='%23c8195f' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
-
-<header>
-    <div class="header-decoration">
-        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="100" cy="100" r="90" stroke="white" stroke-width="1.5"/>
-            <circle cx="100" cy="100" r="70" stroke="white" stroke-width="1" stroke-dasharray="4 6"/>
-            <circle cx="100" cy="100" r="50" stroke="white" stroke-width="1.5"/>
-            <circle cx="100" cy="100" r="30" stroke="white" stroke-width="1" stroke-dasharray="2 4"/>
-            <line x1="10" y1="100" x2="190" y2="100" stroke="white" stroke-width="0.8"/>
-            <line x1="100" y1="10" x2="100" y2="190" stroke="white" stroke-width="0.8"/>
-            <line x1="27" y1="27" x2="173" y2="173" stroke="white" stroke-width="0.5"/>
-            <line x1="173" y1="27" x2="27" y2="173" stroke="white" stroke-width="0.5"/>
-        </svg>
-    </div>
-
-    <div class="container" style="padding-top:0; padding-bottom:0;">
-        <div class="header-tag">projeto — ia generativa</div>
-        <h1>gerador de questões <em>inteligente</em></h1>
-        <p class="header-sub">python · api de ia · taxonomia de bloom · padrões institucionais</p>
-    </div>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<header class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="index.html">Viviane Franco<span>.</span></a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="index.html#para-quem">Para quem</a>
+      <a href="index.html#servicos">Serviços</a>
+      <a href="index.html#resultados">Resultados</a>
+      <a href="index.html#sobre">Sobre</a>
+      <a href="blog.html">Blog</a>
+      <a class="btn btn-primary" href="mailto:vivianefrancodasilva@gmail.com?subject=Conversa%20sobre%20IA%20na%20educa%C3%A7%C3%A3o">Agendar conversa</a>
+    </nav>
+  </div>
 </header>
 
-<div class="container">
-
-    <!-- SCREENSHOT -->
-    <div class="screenshot-wrap">
-        <div class="screenshot-label">interface do sistema</div>
-        <div class="screenshot-frame">
-            <div class="screenshot-bar">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
-            <img loading="lazy" src="images/gerador_questoes.png" alt="Interface do Gerador de Questões com IA"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="screenshot-placeholder" style="display:none;">[ screenshot do sistema ]</div>
-        </div>
-    </div>
-
-    <!-- INTRO -->
-    <p class="intro-text">
-        Sistema que utiliza Python e APIs de inteligência artificial generativa para criar questões de múltipla escolha a partir de conteúdo selecionado pelo usuário — respeitando padrões institucionais, critérios pedagógicos e os seis níveis da Taxonomia de Bloom.
-    </p>
-
-    <!-- FEATURES -->
-    <div class="feature-grid">
-        <div class="feature-card">
-            <span class="feature-icon">🎯</span>
-            <h3>conteúdo personalizado</h3>
-            <p>O usuário seleciona o material de base; o sistema extrai os conceitos centrais e gera questões pertinentes e contextualizadas.</p>
-        </div>
-        <div class="feature-card">
-            <span class="feature-icon">🏛️</span>
-            <h3>padrões institucionais</h3>
-            <p>Questões formatadas conforme exigências de bancas e instituições de ensino, com distratores tecnicamente elaborados.</p>
-        </div>
-        <div class="feature-card">
-            <span class="feature-icon">📚</span>
-            <h3>base pedagógica</h3>
-            <p>Cada questão é classificada e gerada com objetivos de aprendizagem claros, alinhados ao nível cognitivo desejado.</p>
-        </div>
-        <div class="feature-card">
-            <span class="feature-icon">⚡</span>
-            <h3>geração em escala</h3>
-            <p>Produz múltiplos itens em segundos, permitindo montar bancos de questões completos de forma eficiente.</p>
-        </div>
-    </div>
-
-    <!-- BLOOM -->
-    <div class="bloom-section">
-        <h2 class="section-title">Taxonomia de Bloom</h2>
-        <p class="bloom-intro">O sistema mapeia cada questão gerada a um dos seis níveis cognitivos da taxonomia, garantindo equilíbrio e progressão pedagógica.</p>
-        <div class="bloom-levels">
-            <div class="bloom-level">
-                <span class="bloom-level-num">1</span>
-                <div class="bloom-bar-wrap">
-                    <div class="bloom-bar" style="width:30%; opacity:0.55;">lembrar</div>
-                </div>
-            </div>
-            <div class="bloom-level">
-                <span class="bloom-level-num">2</span>
-                <div class="bloom-bar-wrap">
-                    <div class="bloom-bar" style="width:45%; opacity:0.65;">compreender</div>
-                </div>
-            </div>
-            <div class="bloom-level">
-                <span class="bloom-level-num">3</span>
-                <div class="bloom-bar-wrap">
-                    <div class="bloom-bar" style="width:60%; opacity:0.75;">aplicar</div>
-                </div>
-            </div>
-            <div class="bloom-level">
-                <span class="bloom-level-num">4</span>
-                <div class="bloom-bar-wrap">
-                    <div class="bloom-bar" style="width:75%; opacity:0.85;">analisar</div>
-                </div>
-            </div>
-            <div class="bloom-level">
-                <span class="bloom-level-num">5</span>
-                <div class="bloom-bar-wrap">
-                    <div class="bloom-bar" style="width:88%; opacity:0.92;">avaliar</div>
-                </div>
-            </div>
-            <div class="bloom-level">
-                <span class="bloom-level-num">6</span>
-                <div class="bloom-bar-wrap">
-                    <div class="bloom-bar" style="width:100%;">criar</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- TECH STACK -->
-    <div class="tech-section">
-        <h2 class="section-title">tecnologias utilizadas</h2>
-        <div class="tech-tags">
-            <span class="tech-tag">Python</span>
-            <span class="tech-tag">OpenAI API</span>
-            <span class="tech-tag">Prompt Engineering</span>
-            <span class="tech-tag">NLP</span>
-            <span class="tech-tag">Streamlit</span>
-            <span class="tech-tag">python-docx</span>
-            <span class="tech-tag">JSON Schema</span>
-            <span class="tech-tag">Taxonomia de Bloom</span>
-        </div>
-    </div>
-
-    <!-- RESULTS -->
-    <div class="results-section">
-        <h2 class="section-title">resultados</h2>
-        <div class="results-grid">
-            <div class="result-card">
-                <span class="result-number">10×</span>
-                <span class="result-label">mais rápido que elaboração manual</span>
-            </div>
-            <div class="result-card">
-                <span class="result-number">6</span>
-                <span class="result-label">níveis cognitivos cobertos automaticamente</span>
-            </div>
-            <div class="result-card">
-                <span class="result-number">100%</span>
-                <span class="result-label">aderência ao formato institucional</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- NAV -->
-    <div class="nav-row">
-        <a href="index.html" class="back-button">← página inicial</a>
-    </div>
-
+<main id="conteudo">
+<div class="page-head">
+  <div class="wrap">
+    <a class="back" href="index.html#resultados">Voltar aos resultados</a>
+    <h1>Questões de avaliação em 30 minutos</h1>
+    <p class="lead">Um sistema que cria questões de múltipla escolha a partir do conteúdo do curso, seguindo os padrões da instituição e os níveis da Taxonomia de Bloom.</p>
+    <div class="case-result"><span class="before"><span class="del">10 dias</span></span><span class="after">30 min</span><span class="label">Tempo para montar as questões de avaliação de uma disciplina de pós-graduação</span></div>
+  </div>
 </div>
-
+<div class="case-body">
+  <div class="wrap">
+    <div class="case-main">
+      <figure class="case-shot"><img src="images/gerador_questoes.png" alt="Interface do gerador de questões" loading="lazy"><figcaption>Interface do gerador de questões</figcaption></figure>
+      <section><h2>O problema</h2><p>Cada disciplina precisava de um banco de questões alinhado às rubricas da instituição. Elaborar, revisar e ajustar as questões levava cerca de dez dias.</p></section><section><h2>A solução</h2><p>O usuário seleciona o material de base, e o sistema extrai os conceitos centrais e gera questões com gabarito, justificativa e distratores bem construídos. Cada questão é associada a um nível cognitivo da Taxonomia de Bloom (lembrar, compreender, aplicar, analisar, avaliar e criar), o que garante equilíbrio na avaliação.</p><p>As questões passam por especialistas da área antes de serem usadas.</p></section><section><h2>Por que funciona</h2><ol><li><strong>Conteúdo do próprio curso:</strong> as questões nascem do material selecionado, não de conhecimento genérico.</li><li><strong>Padrão institucional:</strong> formato, número de alternativas e estilo seguem as regras da instituição.</li><li><strong>Base pedagógica:</strong> cada questão tem um objetivo de aprendizagem claro.</li></ol></section>
+    </div>
+    <aside class="case-aside" aria-label="Resumo do projeto">
+      <h2>Ferramentas usadas</h2>
+      <ul><li>Python</li><li>API de IA generativa</li><li>Engenharia de prompt</li><li>Streamlit</li><li>python-docx</li><li>JSON Schema</li><li>Taxonomia de Bloom</li></ul>
+      <h2>Quer algo parecido?</h2>
+      <p>Posso adaptar a ideia ao processo da sua equipe.</p>
+      <a class="btn btn-primary" href="mailto:vivianefrancodasilva@gmail.com?subject=Conversa%20sobre%20IA%20na%20educa%C3%A7%C3%A3o">Agendar conversa</a>
+      
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <span>© 2026 Viviane Franco · Consultoria e formação em IA na educação</span>
+    <span><a href="https://www.linkedin.com/in/viviane-francos/" target="_blank" rel="noopener">LinkedIn</a> &nbsp; <a href="https://github.com/vivianefranco" target="_blank" rel="noopener">GitHub</a> &nbsp; <a href="mailto:vivianefrancodasilva@gmail.com">E-mail</a></span>
+  </div>
+</footer>
 </body>
 </html>

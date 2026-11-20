@@ -1,561 +1,87 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DocuMind AI - Revisor Inteligente de Documentos | Viviane Franco</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235b2d82'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='30' fill='%23d4a853'%3EVF%3C/text%3E%3C/svg%3E">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --ink: #0f0e17;
-            --paper: #f9f4ef;
-            --accent: #e8643c;
-            --muted: #a7a9be;
-            --light: #fffffe;
-            --mid: #eee8e0;
-            --code-bg: #1a1825;
-            --success: #28c840;
-        }
-
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: 'Lato', sans-serif;
-            background: var(--paper);
-            color: var(--ink);
-            min-height: 100vh;
-            line-height: 1.6;
-        }
-
-        /* ── HEADER ── */
-        header {
-            position: relative;
-            padding: 6rem 2rem 7rem;
-            overflow: hidden;
-            background: var(--ink);
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px),
-                repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px);
-        }
-
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            max-width: 860px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-        }
-
-        .header-tag {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--accent);
-            display: inline-block;
-            border: 1px solid var(--accent);
-            padding: 0.25rem 0.75rem;
-            border-radius: 2px;
-            margin-bottom: 1.5rem;
-            animation: fadeUp 0.6s ease both;
-        }
-
-        h1 {
-            font-family: 'DM Serif Display', serif;
-            font-size: clamp(2.4rem, 6vw, 4rem);
-            color: var(--light);
-            line-height: 1.1;
-            max-width: 700px;
-            animation: fadeUp 0.6s 0.1s ease both;
-        }
-
-        h1 em { font-style: italic; color: var(--accent); }
-
-        .header-sub {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.9rem;
-            color: var(--muted);
-            margin-top: 1.5rem;
-            max-width: 600px;
-            animation: fadeUp 0.6s 0.2s ease both;
-        }
-
-        .btn-github {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--light);
-            color: var(--ink);
-            text-decoration: none;
-            font-family: 'DM Mono', monospace;
-            font-size: 0.8rem;
-            font-weight: 500;
-            padding: 10px 20px;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            animation: fadeUp 0.6s 0.3s ease both;
-        }
-        .btn-github:hover { background: var(--accent); color: var(--light); transform: translateY(-2px); }
-
-        /* ── MAIN CONTAINER ── */
-        .container {
-            max-width: 860px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-        .content-wrap { margin-top: -3rem; position: relative; z-index: 10; }
-
-        /* ── SCREENSHOT ── */
-        .screenshot-wrap {
-            position: relative;
-            margin-bottom: 4rem;
-            animation: fadeUp 0.7s 0.3s ease both;
-        }
-        .screenshot-frame {
-            border: 1px solid rgba(15,14,23,0.12);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px -10px rgba(15,14,23,0.15);
-            background: var(--light);
-        }
-        .screenshot-bar {
-            background: var(--ink);
-            height: 36px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 0 16px;
-        }
-        .dot { width: 10px; height: 10px; border-radius: 50%; }
-        .dot:nth-child(1) { background: #ff5f57; }
-        .dot:nth-child(2) { background: #ffbd2e; }
-        .dot:nth-child(3) { background: #28c840; }
-        .screenshot-wrap img { width: 100%; height: auto; display: block; }
-        .screenshot-placeholder {
-            width: 100%; height: 400px;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            display: flex; align-items: center; justify-content: center;
-            color: rgba(255,255,255,0.3); font-family: 'DM Mono', monospace; font-size: 0.85rem;
-        }
-
-        /* ── TYPOGRAPHY & SECTIONS ── */
-        .section-title {
-            font-family: 'DM Serif Display', serif;
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: var(--ink);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .section-title::before {
-            content: ''; width: 8px; height: 8px; background: var(--accent); border-radius: 50%;
-        }
-
-        .intro-text {
-            font-size: 1.25rem;
-            line-height: 1.8;
-            color: #2d2b3d;
-            font-weight: 300;
-            margin-bottom: 4rem;
-            border-left: 3px solid var(--accent);
-            padding-left: 1.5rem;
-            animation: fadeUp 0.7s 0.4s ease both;
-        }
-
-        /* ── CHALLENGE SECTION ── */
-        .challenge-section {
-            background: var(--light);
-            border: 1px solid var(--mid);
-            border-radius: 8px;
-            padding: 2.5rem;
-            margin-bottom: 4rem;
-            animation: fadeUp 0.7s 0.5s ease both;
-        }
-        .challenge-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-top: 1.5rem;
-        }
-        .challenge-item h4 {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-            letter-spacing: 0.05em;
-        }
-        .challenge-item p { font-size: 0.95rem; color: #4a4860; line-height: 1.6; }
-
-        /* ── CODE SNIPPET ── */
-        .code-block {
-            background: var(--code-bg);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 2rem 0 4rem;
-            overflow-x: auto;
-            border: 1px solid rgba(255,255,255,0.05);
-            animation: fadeUp 0.7s 0.55s ease both;
-        }
-        .code-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .code-lang { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
-        .code-content { font-family: 'DM Mono', monospace; font-size: 0.85rem; line-height: 1.7; color: #e0e0e0; }
-        .code-content .keyword { color: #c792ea; }
-        .code-content .string { color: #c3e88d; }
-        .code-content .function { color: #82aaff; }
-        .code-content .comment { color: #546e7a; font-style: italic; }
-
-        /* ── FLOW SECTION ── */
-        .flow-section { margin-bottom: 4rem; animation: fadeUp 0.7s 0.6s ease both; }
-        .flow-steps { display: flex; flex-direction: column; gap: 0; margin-top: 1.5rem; }
-        .flow-step {
-            display: flex; gap: 1.25rem; align-items: flex-start;
-            padding: 1.25rem 0; border-bottom: 1px solid var(--mid);
-        }
-        .flow-step:last-child { border-bottom: none; }
-        .flow-num {
-            font-family: 'DM Mono', monospace; font-size: 0.75rem; font-weight: 700;
-            color: var(--accent); background: rgba(232, 100, 60, 0.1);
-            width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
-            border-radius: 50%; flex-shrink: 0;
-        }
-        .flow-content h4 { font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.3rem; }
-        .flow-content p { font-size: 0.95rem; color: #4a4860; line-height: 1.6; }
-
-        /* ── TECH STACK ── */
-        .tech-section { margin-bottom: 4rem; animation: fadeUp 0.7s 0.7s ease both; }
-        .tech-categories { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 1.5rem; }
-        .tech-cat-title { font-family: 'DM Mono', monospace; font-size: 0.75rem; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; letter-spacing: 0.1em; }
-        .tech-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-        .tech-tag {
-            font-family: 'DM Mono', monospace; font-size: 0.78rem;
-            padding: 0.4rem 0.85rem; border: 1px solid var(--ink);
-            border-radius: 4px; background: transparent; color: var(--ink);
-        }
-
-        /* ── FEATURES GRID ── */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.25rem;
-            margin-bottom: 4rem;
-            animation: fadeUp 0.7s 0.65s ease both;
-        }
-        .feature-card {
-            background: var(--light);
-            border: 1px solid var(--mid);
-            border-radius: 6px;
-            padding: 1.5rem;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .feature-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 4px 4px 0 var(--ink);
-        }
-        .feature-icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.75rem;
-            display: block;
-        }
-        .feature-card h3 {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
-        .feature-card p {
-            font-size: 0.92rem;
-            line-height: 1.6;
-            color: #4a4860;
-        }
-
-        /* ── RESULTS ── */
-        .results-section { margin-bottom: 5rem; animation: fadeUp 0.7s 0.75s ease both; }
-        .results-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;
-        }
-        .result-card {
-            background: var(--light); border: 1px solid var(--mid); border-radius: 8px;
-            padding: 2rem 1.5rem; text-align: left; transition: transform 0.3s;
-            display: flex; flex-direction: column; justify-content: space-between;
-        }
-        .result-card:hover { transform: translateY(-4px); border-color: var(--accent); }
-        .result-header {
-            font-family: 'DM Mono', monospace; font-size: 0.75rem; text-transform: uppercase;
-            letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.5rem;
-        }
-        .result-number {
-            font-family: 'DM Serif Display', serif; font-size: 2.2rem;
-            color: var(--ink); line-height: 1.1; display: block; margin-bottom: 0.75rem;
-        }
-        .result-label { font-size: 0.9rem; color: #4a4860; font-weight: 400; line-height: 1.5; }
-
-        /* ── NAV / CTA ── */
-        .nav-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 3rem 0; border-top: 1px solid var(--mid);
-            animation: fadeUp 0.7s 0.85s ease both;
-        }
-        .back-button {
-            font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--ink);
-            text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
-            transition: color 0.2s;
-        }
-        .back-button:hover { color: var(--accent); }
-        
-        .cta-box {
-            background: var(--ink); color: var(--light); padding: 2.5rem; border-radius: 8px;
-            text-align: center; margin-bottom: 3rem; animation: fadeUp 0.7s 0.8s ease both;
-        }
-        .cta-box h3 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; margin-bottom: 1rem; }
-        .cta-box p { color: var(--muted); margin-bottom: 1.5rem; max-width: 500px; margin-left: auto; margin-right: auto; }
-        .btn-primary {
-            display: inline-block; background: var(--accent); color: var(--light);
-            text-decoration: none; padding: 12px 28px; border-radius: 4px;
-            font-family: 'DM Mono', monospace; font-weight: 500; font-size: 0.85rem;
-            transition: all 0.3s;
-        }
-        .btn-primary:hover { background: #d55a34; transform: translateY(-2px); }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(18px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 768px) {
-            .header-top { flex-direction: column; gap: 1.5rem; }
-            .challenge-grid { grid-template-columns: 1fr; }
-            .results-grid { grid-template-columns: 1fr; }
-            .nav-row { flex-direction: column; gap: 1.5rem; text-align: center; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DocuMind AI: revisor de documentos | Viviane Franco</title>
+<meta name="description" content="Uma aplicação web que revisa gramática e estilo de documentos Word parágrafo por parágrafo, preservando a formatação original.">
+<meta name="author" content="Viviane Franco">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="DocuMind AI: revisor de documentos | Viviane Franco">
+<meta property="og:description" content="Uma aplicação web que revisa gramática e estilo de documentos Word parágrafo por parágrafo, preservando a formatação original.">
+<meta property="og:url" content="https://vivianefranco.github.io/projeto-revisor.html">
+<meta property="og:image" content="https://vivianefranco.github.io/images/ciaed-palco.jpg">
+<meta name="theme-color" content="#23204a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2323204a'/%3E%3Ctext x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial,sans-serif' font-weight='700' font-size='30' fill='%23ffffff'%3EVF%3C/text%3E%3Cpath d='M12 50 L52 46' stroke='%23c8195f' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
-
-<header>
-    <div class="header-top">
-        <div>
-            <div class="header-tag">Aplicação Web · Streamlit + Qwen API</div>
-            <h1>DocuMind <em>AI</em></h1>
-            <p class="header-sub">
-                Revisor gramatical e de estilo para documentos corporativos e acadêmicos em .docx. 
-                Interface interativa em Streamlit alimentada pelo modelo Qwen 3.7 Plus (Alibaba Cloud).
-            </p>
-        </div>
-        <a href="https://github.com/vivianefranco/documind_ai" target="_blank" rel="noopener" target="_blank" class="btn-github">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-            Ver Código Fonte
-        </a>
-    </div>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<header class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="index.html">Viviane Franco<span>.</span></a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="index.html#para-quem">Para quem</a>
+      <a href="index.html#servicos">Serviços</a>
+      <a href="index.html#resultados">Resultados</a>
+      <a href="index.html#sobre">Sobre</a>
+      <a href="blog.html">Blog</a>
+      <a class="btn btn-primary" href="mailto:vivianefrancodasilva@gmail.com?subject=Conversa%20sobre%20IA%20na%20educa%C3%A7%C3%A3o">Agendar conversa</a>
+    </nav>
+  </div>
 </header>
 
-<div class="container content-wrap">
-
-    <!-- SCREENSHOT -->
-    <div class="screenshot-wrap">
-        <div class="screenshot-frame">
-            <div class="screenshot-bar">
-                <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-            </div>
-            <img src="images/documind.png" loading="lazy" alt="Interface do DocuMind AI em execução"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="screenshot-placeholder" style="display:none;">[ interface do DocuMind AI ]</div>
-        </div>
-    </div>
-
-    <!-- INTRO -->
-    <p class="intro-text">
-        Desenvolvi uma aplicação web interativa que automatiza a revisão gramatical e de estilo de documentos Word (.docx). 
-        A solução combina uma interface amigável construída em <strong>Streamlit</strong> com o poder do modelo 
-        <strong>Qwen 3.7 Plus</strong> da Alibaba Cloud, processando parágrafo por parágrafo para preservar a formatação 
-        original do documento enquanto aplica melhorias de clareza, coesão e correção gramatical.
-    </p>
-
-    <!-- FEATURES -->
-    <div class="features-grid">
-        <div class="feature-card">
-            <span class="feature-icon">📂</span>
-            <h3>Upload de .docx</h3>
-            <p>Interface drag-and-drop para upload de documentos Word, com suporte a arquivos de até 200MB.</p>
-        </div>
-        <div class="feature-card">
-            <span class="feature-icon">🤖</span>
-            <h3>Qwen 3.7 Plus</h3>
-            <p>Utilização do modelo de linguagem avançado da Alibaba Cloud via API compatível com OpenAI.</p>
-        </div>
-        <div class="feature-card">
-            <span class="feature-icon">✍️</span>
-            <h3>Preservação de Formatação</h3>
-            <p>Algoritmo que mantém a estrutura de parágrafos, títulos e formatação implícita do documento original.</p>
-        </div>
-        <div class="feature-card">
-            <span class="feature-icon">📊</span>
-            <h3>Progresso em Tempo Real</h3>
-            <p>Barra de progresso e feedback visual mostrando o processamento parágrafo por parágrafo.</p>
-        </div>
-    </div>
-
-    <!-- CHALLENGE SECTION -->
-    <div class="challenge-section">
-        <h2 class="section-title">Desafios Técnicos Resolvidos</h2>
-        <div class="challenge-grid">
-            <div class="challenge-item">
-                <h4>01. Manipulação de DOCX</h4>
-                <p>A biblioteca <code>python-docx</code> exige manipulação cuidadosa dos objetos <code>paragraph.runs</code> para preservar formatação. Implementei lógica para substituir o texto mantendo negritos, itálicos e estilos intactos.</p>
-            </div>
-            <div class="challenge-item">
-                <h4>02. Processamento Sequencial</h4>
-                <p>Para evitar perda de contexto e estourar limites de tokens, o documento é processado parágrafo por parágrafo, com controle de taxa de requisição e tratamento de erros individual por bloco de texto.</p>
-            </div>
-            <div class="challenge-item">
-                <h4>03. Integração API Qwen</h4>
-                <p>Configuração do endpoint específico do workspace Alibaba Cloud (maas.aliyuncs.com) com autenticação via API Key e validação de conexão antes do processamento em massa.</p>
-            </div>
-            <div class="challenge-item">
-                <h4>04. Interface Interativa</h4>
-                <p>Streamlit permite criar uma UI funcional com upload de arquivos, barra de progresso dinâmica, feedback de status e botão de download do documento processado — tudo em poucas linhas de código Python.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- CODE SNIPPET -->
-    <div class="code-block">
-        <div class="code-header">
-            <span class="code-lang">Python · Função de Revisão com Qwen API</span>
-        </div>
-        <div class="code-content">
-<span class="keyword">def</span> <span class="function">revisar_texto</span>(client, texto):
-    prompt = <span class="string">f"""Você é um revisor profissional de textos corporativos e acadêmicos.
-Sua tarefa é revisar o texto abaixo, corrigindo gramática, ortografia e melhorando clareza.
-
-REGRAS ESTRITAS:
+<main id="conteudo">
+<div class="page-head">
+  <div class="wrap">
+    <a class="back" href="index.html#resultados">Voltar aos resultados</a>
+    <h1>Revisão de apostilas longas em minutos</h1>
+    <p class="lead">Uma aplicação web que revisa gramática e estilo de documentos Word parágrafo por parágrafo, preservando a formatação original.</p>
+    <div class="case-result"><span class="before"><span class="del">3 dias</span></span><span class="after">10 min</span><span class="label">Tempo de revisão de uma apostila com mais de 100 páginas, sem custo de revisão externa</span></div>
+  </div>
+</div>
+<div class="case-body">
+  <div class="wrap">
+    <div class="case-main">
+      <figure class="case-shot"><img src="images/documind.png" alt="Interface do DocuMind AI revisando um documento" loading="lazy"><figcaption>Interface do DocuMind AI revisando um documento</figcaption></figure>
+      <section><h2>O problema</h2><p>Apostilas com mais de 100 páginas levavam dias para ser revisadas e dependiam de revisão externa. Colar o texto num chat de IA resolvia a gramática, mas destruía a formatação do documento.</p></section><section><h2>A solução</h2><p>O DocuMind lê o arquivo .docx, envia cada parágrafo para revisão e devolve o texto corrigido no mesmo lugar, mantendo negritos, itálicos, títulos e listas. A interface mostra o progresso em tempo real e entrega o documento pronto para download.</p></section><section><h2>Desafios resolvidos</h2><ol><li><strong>Formatação preservada:</strong> o texto é trocado dentro da estrutura do Word, sem perder estilos.</li><li><strong>Documentos longos:</strong> o processamento parágrafo a parágrafo evita estourar o limite do modelo e permite tratar erros bloco a bloco.</li><li><strong>Instruções precisas:</strong> o prompt pede só o texto revisado e proíbe mudanças na estrutura.</li></ol></section><section><h2>Trecho do código</h2><pre><code>def revisar_texto(client, texto):
+    prompt = f"""Você é um revisor profissional de textos corporativos e acadêmicos.
+Revise o texto abaixo, corrigindo gramática e ortografia e melhorando a clareza.
+REGRAS:
 1. Responda APENAS com o texto revisado
-2. Mantenha a estrutura de parágrafos exatamente como no original
-3. Preserve formatação implícita (títulos, listas)
-
+2. Mantenha a estrutura de parágrafos do original
+3. Preserve a formatação implícita (títulos, listas)
 TEXTO ORIGINAL:
 ---
-</span>{texto}<span class="string">
----
-
-TEXTO REVISADO:"""</span>
-
-    response = client.chat.completions.create(
-        model=<span class="string">"qwen3.7-plus"</span>,
-        messages=[{<span class="string">"role"</span>: <span class="string">"user"</span>, <span class="string">"content"</span>: prompt}],
-        temperature=<span class="keyword">0.3</span>,
-        max_tokens=<span class="keyword">4000</span>
+{texto}
+---"""
+    resposta = client.chat.completions.create(
+        model="qwen3.7-plus",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.3,
     )
-    <span class="keyword">return</span> response.choices[<span class="keyword">0</span>].message.content.strip()
-        </div>
+    return resposta.choices[0].message.content.strip()</code></pre></section>
     </div>
-
-    <!-- FLOW -->
-    <div class="flow-section">
-        <h2 class="section-title">Fluxo de Processamento</h2>
-        <div class="flow-steps">
-            <div class="flow-step">
-                <div class="flow-num">1</div>
-                <div class="flow-content">
-                    <h4>Upload e Validação</h4>
-                    <p>O usuário faz upload do arquivo .docx via interface Streamlit. O sistema valida o tipo e tamanho do arquivo.</p>
-                </div>
-            </div>
-            <div class="flow-step">
-                <div class="flow-num">2</div>
-                <div class="flow-content">
-                    <h4>Configuração da API</h4>
-                    <p>O usuário insere a API Key da Alibaba Cloud. O sistema testa a conexão com o endpoint do Qwen 3.7 Plus antes de iniciar.</p>
-                </div>
-            </div>
-            <div class="flow-step">
-                <div class="flow-num">3</div>
-                <div class="flow-content">
-                    <h4>Processamento Parágrafo a Parágrafo</h4>
-                    <p>O documento é lido com <code>python-docx</code>. Cada parágrafo com mais de 15 caracteres é enviado à API para revisão, mantendo os <code>runs</code> de formatação.</p>
-                </div>
-            </div>
-            <div class="flow-step">
-                <div class="flow-num">4</div>
-                <div class="flow-content">
-                    <h4>Reconstrução e Download</h4>
-                    <p>O documento revisado é salvo em um <code>BytesIO</code> e disponibilizado para download imediato, preservando toda a estrutura original.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- TECH STACK -->
-    <div class="tech-section">
-        <h2 class="section-title">Stack Tecnológico</h2>
-        <div class="tech-categories">
-            <div>
-                <div class="tech-cat-title">Backend & Processamento</div>
-                <div class="tech-tags">
-                    <span class="tech-tag">Python 3.x</span>
-                    <span class="tech-tag">python-docx</span>
-                    <span class="tech-tag">io.BytesIO</span>
-                    <span class="tech-tag">time (controle de rate)</span>
-                </div>
-            </div>
-            <div>
-                <div class="tech-cat-title">Inteligência Artificial</div>
-                <div class="tech-tags">
-                    <span class="tech-tag">Qwen 3.7 Plus</span>
-                    <span class="tech-tag">Alibaba Cloud (DashScope)</span>
-                    <span class="tech-tag">OpenAI SDK (compatível)</span>
-                    <span class="tech-tag">Prompt Engineering</span>
-                </div>
-            </div>
-            <div>
-                <div class="tech-cat-title">Interface & UX</div>
-                <div class="tech-tags">
-                    <span class="tech-tag">Streamlit</span>
-                    <span class="tech-tag">st.progress</span>
-                    <span class="tech-tag">st.file_uploader</span>
-                    <span class="tech-tag">st.download_button</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-
-    <!-- CTA FINAL -->
-    <div class="cta-box">
-        <h3>Interessado em automatizar processos educacionais?</h3>
-        <p>Este projeto demonstra minha capacidade de integrar APIs de IA de ponta com manipulação avançada de documentos e criação de ecossistemas educacionais eficientes em Python.</p>
-        <a href="mailto:vivianefrancodasilva@gmail.com" class="btn-primary">Vamos conversar sobre este projeto</a>
-    </div>
-
-    <!-- NAV -->
-    <div class="nav-row">
-        <a href="index.html" class="back-button">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            Voltar ao Portfólio Principal
-        </a>
-        <a href="https://github.com/vivianefranco/documind_ai" target="_blank" rel="noopener" target="_blank" class="back-button" style="border-bottom: none; gap: 8px;">
-            Ver repositório no GitHub
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </a>
-    </div>
-
+    <aside class="case-aside" aria-label="Resumo do projeto">
+      <h2>Ferramentas usadas</h2>
+      <ul><li>Python</li><li>Streamlit</li><li>python-docx</li><li>Qwen 3.7 Plus (Alibaba Cloud)</li><li>SDK compatível com OpenAI</li></ul>
+      <h2>Quer algo parecido?</h2>
+      <p>Posso adaptar a ideia ao processo da sua equipe.</p>
+      <a class="btn btn-primary" href="mailto:vivianefrancodasilva@gmail.com?subject=Conversa%20sobre%20IA%20na%20educa%C3%A7%C3%A3o">Agendar conversa</a>
+      <a class="btn btn-ghost" href="https://github.com/vivianefranco/documind_ai" target="_blank" rel="noopener">Ver o código</a>
+    </aside>
+  </div>
 </div>
-
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <span>© 2026 Viviane Franco · Consultoria e formação em IA na educação</span>
+    <span><a href="https://www.linkedin.com/in/viviane-francos/" target="_blank" rel="noopener">LinkedIn</a> &nbsp; <a href="https://github.com/vivianefranco" target="_blank" rel="noopener">GitHub</a> &nbsp; <a href="mailto:vivianefrancodasilva@gmail.com">E-mail</a></span>
+  </div>
+</footer>
 </body>
 </html>

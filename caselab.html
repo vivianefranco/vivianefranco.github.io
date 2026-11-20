@@ -1,538 +1,71 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CaseLab — Aprender resolvendo um problema real | Viviane Franco</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235b2d82'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='30' fill='%23d4a853'%3EVF%3C/text%3E%3C/svg%3E">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --ink: #0f0e17;
-            --paper: #f9f4ef;
-            --accent: #e8643c;
-            --muted: #a7a9be;
-            --light: #fffffe;
-            --mid: #eee8e0;
-        }
-
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: 'Lato', sans-serif;
-            background: var(--paper);
-            color: var(--ink);
-            min-height: 100vh;
-        }
-
-        /* ── HEADER ── */
-        header {
-            position: relative;
-            padding: 5rem 2rem 6rem;
-            overflow: hidden;
-            background: var(--ink);
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.04) 39px, rgba(255,255,255,0.04) 40px),
-                repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.04) 39px, rgba(255,255,255,0.04) 40px);
-        }
-
-        .header-tag {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--accent);
-            display: inline-block;
-            border: 1px solid var(--accent);
-            padding: 0.25rem 0.75rem;
-            border-radius: 2px;
-            margin-bottom: 1.5rem;
-            position: relative;
-            animation: fadeUp 0.6s ease both;
-        }
-
-        h1 {
-            font-family: 'DM Serif Display', serif;
-            font-size: clamp(2.4rem, 6vw, 4.5rem);
-            color: var(--light);
-            line-height: 1.1;
-            max-width: 700px;
-            position: relative;
-            animation: fadeUp 0.6s 0.1s ease both;
-        }
-
-        h1 em {
-            font-style: italic;
-            color: var(--accent);
-        }
-
-        .header-sub {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.85rem;
-            color: var(--muted);
-            margin-top: 1.5rem;
-            position: relative;
-            animation: fadeUp 0.6s 0.2s ease both;
-            letter-spacing: 0.05em;
-        }
-
-        .header-decoration {
-            position: absolute;
-            right: 5%;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 220px;
-            height: 220px;
-            opacity: 0.07;
-            animation: spin 30s linear infinite;
-        }
-
-        /* ── MAIN CONTAINER ── */
-        .container {
-            max-width: 860px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
-
-        /* ── SCREENSHOT BLOCK ── */
-        .screenshot-wrap {
-            position: relative;
-            margin-bottom: 4rem;
-            animation: fadeUp 0.7s 0.3s ease both;
-        }
-
-        .screenshot-label {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.7rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--muted);
-            margin-bottom: 0.75rem;
-        }
-
-        .screenshot-frame {
-            border: 1px solid rgba(15,14,23,0.12);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 8px 8px 0px var(--ink);
-            background: var(--light);
-        }
-
-        .screenshot-bar {
-            background: var(--ink);
-            height: 32px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 0 14px;
-        }
-
-        .dot {
-            width: 10px; height: 10px;
-            border-radius: 50%;
-            background: var(--muted);
-            opacity: 0.4;
-        }
-        .dot:nth-child(1) { background: #ff5f57; opacity: 1; }
-        .dot:nth-child(2) { background: #ffbd2e; opacity: 1; }
-        .dot:nth-child(3) { background: #28c840; opacity: 1; }
-
-        .screenshot-wrap img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .screenshot-placeholder {
-            width: 100%;
-            height: 280px;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255,255,255,0.2);
-            font-family: 'DM Mono', monospace;
-            font-size: 0.85rem;
-            letter-spacing: 0.1em;
-        }
-
-        /* ── SECTION INTRO ── */
-        .intro-text {
-            font-size: 1.2rem;
-            line-height: 1.85;
-            color: #2d2b3d;
-            font-weight: 300;
-            margin-bottom: 3.5rem;
-            border-left: 3px solid var(--accent);
-            padding-left: 1.5rem;
-            animation: fadeUp 0.7s 0.4s ease both;
-        }
-
-        /* ── SECTION TITLE ── */
-        .section-title {
-            font-family: 'DM Serif Display', serif;
-            font-size: 1.6rem;
-            margin-bottom: 1.5rem;
-            color: var(--ink);
-        }
-
-        /* ── FEATURE GRID ── */
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
-            gap: 1.25rem;
-            margin-bottom: 4rem;
-            animation: fadeUp 0.7s 0.5s ease both;
-        }
-
-        .feature-card {
-            background: var(--light);
-            border: 1px solid var(--mid);
-            border-radius: 6px;
-            padding: 1.5rem;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 4px 4px 0 var(--ink);
-        }
-
-        .feature-icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.75rem;
-            display: block;
-        }
-
-        .feature-card h3 {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
-
-        .feature-card p {
-            font-size: 0.92rem;
-            line-height: 1.6;
-            color: #4a4860;
-        }
-
-        /* ── BLOOM SECTION ── */
-        .bloom-section {
-            background: var(--ink);
-            color: var(--light);
-            border-radius: 8px;
-            padding: 2.5rem;
-            margin-bottom: 4rem;
-            animation: fadeUp 0.7s 0.6s ease both;
-        }
-
-        .bloom-section .section-title {
-            color: var(--light);
-            margin-bottom: 0.5rem;
-        }
-
-        .bloom-intro {
-            color: var(--muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.75rem;
-        }
-
-        .bloom-levels {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-        }
-
-        .bloom-level {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .bloom-bar-wrap {
-            flex: 1;
-            height: 28px;
-            background: rgba(255,255,255,0.06);
-            border-radius: 3px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .bloom-bar {
-            height: 100%;
-            background: var(--accent);
-            border-radius: 3px;
-            display: flex;
-            align-items: center;
-            padding-left: 0.75rem;
-            font-family: 'DM Mono', monospace;
-            font-size: 0.72rem;
-            letter-spacing: 0.08em;
-            color: var(--light);
-            transform-origin: left;
-            animation: growBar 1s 0.9s ease both;
-        }
-
-        .bloom-level-num {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--muted);
-            width: 12px;
-            text-align: center;
-        }
-
-        @keyframes growBar {
-            from { transform: scaleX(0); }
-            to { transform: scaleX(1); }
-        }
-
-        /* ── TECH STACK ── */
-        .tech-section {
-            margin-bottom: 4rem;
-            animation: fadeUp 0.7s 0.7s ease both;
-        }
-
-        .tech-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-            margin-top: 1rem;
-        }
-
-        .tech-tag {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.78rem;
-            letter-spacing: 0.08em;
-            padding: 0.35rem 0.85rem;
-            border: 1.5px solid var(--ink);
-            border-radius: 2px;
-            background: transparent;
-            transition: background 0.2s, color 0.2s;
-            cursor: default;
-        }
-
-        .tech-tag:hover {
-            background: var(--ink);
-            color: var(--light);
-        }
-
-        /* ── RESULTS ── */
-        .results-section {
-            margin-bottom: 4rem;
-            animation: fadeUp 0.7s 0.75s ease both;
-        }
-
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .result-card {
-            background: var(--light);
-            border: 1px solid var(--mid);
-            border-radius: 6px;
-            padding: 1.5rem 1rem;
-            text-align: center;
-        }
-
-        .result-number {
-            font-family: 'DM Serif Display', serif;
-            font-size: 2.8rem;
-            color: var(--accent);
-            line-height: 1;
-            display: block;
-        }
-
-        .result-label {
-            font-size: 0.82rem;
-            color: var(--muted);
-            margin-top: 0.4rem;
-            line-height: 1.4;
-        }
-
-        /* ── BACK BUTTON ── */
-        .nav-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 2rem;
-            border-top: 1px solid var(--mid);
-            animation: fadeUp 0.7s 0.85s ease both;
-        }
-
-        .back-button {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.82rem;
-            letter-spacing: 0.08em;
-            color: var(--ink);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            border-bottom: 1px solid currentColor;
-            padding-bottom: 2px;
-            transition: color 0.2s;
-        }
-
-        .back-button:hover { color: var(--accent); }
-
-        .github-link {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.82rem;
-            letter-spacing: 0.08em;
-            color: var(--light);
-            background: var(--ink);
-            text-decoration: none;
-            padding: 0.5rem 1.25rem;
-            border-radius: 3px;
-            transition: background 0.2s;
-        }
-
-        .github-link:hover { background: var(--accent); }
-
-        /* ── ANIMATIONS ── */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(18px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes spin {
-            to { transform: translateY(-50%) rotate(360deg); }
-        }
-
-        /* ── RESPONSIVE ── */
-        @media (max-width: 600px) {
-            .results-grid { grid-template-columns: 1fr; }
-            .header-decoration { display: none; }
-        }
-    </style>
-    <style>
-        .flow-list { list-style: none; counter-reset: passo; display: flex; flex-direction: column; gap: 14px; margin-top: 10px; }
-        .flow-list li { counter-increment: passo; display: grid; grid-template-columns: 48px 1fr; gap: 16px; align-items: start;
-            background: white; border: 1px solid rgba(0,0,0,0.07); border-radius: 12px; padding: 20px 22px; line-height: 1.6; }
-        .flow-list li::before { content: counter(passo, decimal-leading-zero); font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--accent); line-height: 1; }
-        .flow-list strong { display: block; margin-bottom: 4px; }
-        .flow-section, .security-section { margin: 70px 0; }
-        .security-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-top: 10px; }
-        .security-list div { background: white; border: 1px solid rgba(0,0,0,0.07); border-radius: 10px; padding: 18px 20px; font-size: 0.92rem; line-height: 1.6; }
-        .security-list strong { display: block; margin-bottom: 4px; }
-        .repo-link { display: inline-block; margin-left: 14px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CaseLab | Viviane Franco</title>
+<meta name="description" content="Uma plataforma em que a IA monta uma trilha de aprendizagem a partir de um problema real da equipe, faz mentoria individual e sintetiza as ideias da turma, sempre com revisão humana. Projeto autoral, em desenvolvimento.">
+<meta name="author" content="Viviane Franco">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="CaseLab | Viviane Franco">
+<meta property="og:description" content="Uma plataforma em que a IA monta uma trilha de aprendizagem a partir de um problema real da equipe, faz mentoria individual e sintetiza as ideias da turma, sempre com revisão humana. Projeto autoral, em desenvolvimento.">
+<meta property="og:url" content="https://vivianefranco.github.io/caselab.html">
+<meta property="og:image" content="https://vivianefranco.github.io/images/ciaed-palco.jpg">
+<meta name="theme-color" content="#23204a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2323204a'/%3E%3Ctext x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial,sans-serif' font-weight='700' font-size='30' fill='%23ffffff'%3EVF%3C/text%3E%3Cpath d='M12 50 L52 46' stroke='%23c8195f' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
-
-<header>
-    <div class="header-decoration">
-        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="100" cy="100" r="90" stroke="white" stroke-width="1.5"/>
-            <circle cx="100" cy="100" r="70" stroke="white" stroke-width="1" stroke-dasharray="4 6"/>
-            <circle cx="100" cy="100" r="50" stroke="white" stroke-width="1.5"/>
-            <circle cx="100" cy="100" r="30" stroke="white" stroke-width="1" stroke-dasharray="2 4"/>
-            <line x1="10" y1="100" x2="190" y2="100" stroke="white" stroke-width="0.8"/>
-            <line x1="100" y1="10" x2="100" y2="190" stroke="white" stroke-width="0.8"/>
-        </svg>
-    </div>
-
-    <div class="container" style="padding-top:0; padding-bottom:0;">
-        <div class="header-tag">projeto — ia na aprendizagem corporativa</div>
-        <h1>caselab: aprender resolvendo um <em>problema real</em></h1>
-        <p class="header-sub">python · streamlit · ia generativa · metodologias ativas · lgpd</p>
-    </div>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<header class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="index.html">Viviane Franco<span>.</span></a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="index.html#para-quem">Para quem</a>
+      <a href="index.html#servicos">Serviços</a>
+      <a href="index.html#resultados">Resultados</a>
+      <a href="index.html#sobre">Sobre</a>
+      <a href="blog.html">Blog</a>
+      <a class="btn btn-primary" href="mailto:vivianefrancodasilva@gmail.com?subject=Conversa%20sobre%20IA%20na%20educa%C3%A7%C3%A3o">Agendar conversa</a>
+    </nav>
+  </div>
 </header>
 
-<div class="container">
-
-    <!-- INTRO -->
-    <p class="intro-text">
-        O CaseLab ajuda uma equipe a desenvolver as competências de que precisa para resolver um problema real da própria área, por meio de uma trilha de aprendizagem que começa pelo caso. O gestor traz o problema; a IA rascunha a trilha a partir dos materiais da biblioteca; a área de T&amp;D revisa e aprova. A turma aprende em etapas curtas, propõe soluções com mentoria da IA e troca ideias num mural. Não há nota nem resposta certa.
-    </p>
-
-    <!-- PAPÉIS -->
-    <div class="feature-grid">
-        <div class="feature-card">
-            <span class="feature-icon">📚</span>
-            <h3>área de t&amp;d</h3>
-            <p>Mantém a biblioteca de materiais, revisa e aprova as trilhas e indica recursos complementares.</p>
-        </div>
-        <div class="feature-card">
-            <span class="feature-icon">🧭</span>
-            <h3>gestor</h3>
-            <p>Registra o problema, quem participa e as competências necessárias; publica a trilha e faz a devolutiva coletiva.</p>
-        </div>
-        <div class="feature-card">
-            <span class="feature-icon">💡</span>
-            <h3>colaborador</h3>
-            <p>Percorre as etapas, propõe uma solução, lapida a ideia e comenta as propostas dos colegas.</p>
-        </div>
-        <div class="feature-card">
-            <span class="feature-icon">🤖</span>
-            <h3>ia</h3>
-            <p>Rascunha a trilha, faz a mentoria individual e sintetiza a turma — sempre com revisão humana.</p>
-        </div>
-    </div>
-
-    <!-- FLUXO -->
-    <div class="flow-section">
-        <h2 class="section-title">como funciona</h2>
-        <ol class="flow-list">
-            <li><div><strong>Nova trilha</strong>O gestor descreve o problema, quem participa e as competências necessárias (a IA pode sugerir) e escolhe os materiais.</div></li>
-            <li><div><strong>Rascunho pela IA</strong>Caso, convite, entrega esperada e de 3 a 5 etapas, cada uma com conteúdo, exemplo e reflexão aplicada ao caso. A complexidade acompanha o cargo de quem participa.</div></li>
-            <li><div><strong>Revisão pela T&amp;D</strong>A equipe de aprendizagem edita tudo, inclui recursos e aprova ou devolve a trilha.</div></li>
-            <li><div><strong>Publicação</strong>O gestor publica a trilha e pode enviar um aviso coletivo no Teams.</div></li>
-            <li><div><strong>Trilha do colaborador</strong>Etapas liberadas em sequência, proposta com mentoria da IA, mural com as ideias da turma e nova versão da proposta.</div></li>
-            <li><div><strong>Fechamento</strong>O gestor acompanha o andamento, encaminha as ideias, recebe uma síntese da turma e faz a devolutiva coletiva.</div></li>
-        </ol>
-    </div>
-
-    <!-- SEGURANÇA -->
-    <div class="security-section">
-        <h2 class="section-title">segurança e privacidade desde o desenho</h2>
-        <div class="security-list">
-            <div><strong>Revisão humana</strong>Nenhum conteúdo gerado pela IA chega à turma sem revisão da T&amp;D.</div>
-            <div><strong>Minimização de dados (LGPD)</strong>O nome do colaborador nunca é enviado à IA e a síntese da turma é anônima.</div>
-            <div><strong>Proteção contra injeção de prompt</strong>Materiais delimitados, comandos nos dados ignorados e competências validadas contra a lista da trilha.</div>
-            <div><strong>Autenticação e papéis</strong>Login corporativo (SSO), permissões por papel e trilha travada depois de publicada.</div>
-            <div><strong>Auditoria</strong>Registro de logins, aprovações, publicações, exportações e exclusões.</div>
-            <div><strong>Controle de custo</strong>Limites de uso da IA por pessoa e por sessão.</div>
-        </div>
-    </div>
-
-    <!-- TECH STACK -->
-    <div class="tech-section">
-        <h2 class="section-title">tecnologias utilizadas</h2>
-        <div class="tech-tags">
-            <span class="tech-tag">Python</span>
-            <span class="tech-tag">Streamlit</span>
-            <span class="tech-tag">IA Generativa (LLMs)</span>
-            <span class="tech-tag">Prompt Engineering</span>
-            <span class="tech-tag">SQLAlchemy</span>
-            <span class="tech-tag">PostgreSQL / SQLite</span>
-            <span class="tech-tag">BM25</span>
-            <span class="tech-tag">Microsoft Entra ID (OIDC)</span>
-            <span class="tech-tag">Teams Workflows</span>
-            <span class="tech-tag">Metodologias Ativas</span>
-        </div>
-    </div>
-
-    <!-- NAV -->
-    <div class="nav-row">
-        <a href="index.html" class="back-button">← página inicial</a>
-        <a href="https://github.com/vivianefranco/caselab" class="back-button repo-link" target="_blank" rel="noopener">código no github →</a>
-    </div>
-
+<main id="conteudo">
+<div class="page-head">
+  <div class="wrap">
+    <a class="back" href="index.html#resultados">Voltar aos resultados</a>
+    <h1>CaseLab: aprender resolvendo um problema real</h1>
+    <p class="lead">Uma plataforma em que a IA monta uma trilha de aprendizagem a partir de um problema real da equipe, faz mentoria individual e sintetiza as ideias da turma, sempre com revisão humana. Projeto autoral, em desenvolvimento.</p>
+    
+  </div>
 </div>
-
+<div class="case-body">
+  <div class="wrap">
+    <div class="case-main">
+      
+      <section><h2>A ideia</h2><p>Em vez de um curso genérico, a equipe aprende enquanto resolve um problema da própria área. O gestor traz o problema, a IA rascunha a trilha a partir dos materiais da biblioteca e a área de T&amp;D revisa e aprova. Não há nota nem resposta certa.</p></section><section><h2>Papéis</h2><ol><li><strong>Área de T&amp;D:</strong> mantém a biblioteca de materiais, revisa e aprova as trilhas.</li><li><strong>Gestor:</strong> registra o problema, quem participa e as competências necessárias; publica e faz a devolutiva coletiva.</li><li><strong>Colaborador:</strong> percorre as etapas, propõe uma solução com mentoria da IA e comenta as propostas dos colegas num mural.</li><li><strong>IA:</strong> rascunha a trilha, faz a mentoria individual e sintetiza a turma, sempre com revisão humana.</li></ol></section><section><h2>Como funciona</h2><ol><li>O gestor descreve o problema, o público e as competências.</li><li>A IA propõe o caso, a entrega esperada e de 3 a 5 etapas curtas.</li><li>A T&amp;D revisa, inclui recursos e aprova.</li><li>A turma percorre as etapas, propõe soluções e troca ideias.</li><li>O gestor recebe uma síntese e fecha com uma devolutiva coletiva.</li></ol></section><section><h2>Segurança e privacidade desde o desenho</h2><p>Nenhum conteúdo da IA chega à turma sem revisão. O nome dos participantes nunca é enviado à IA, a síntese é anônima e há proteção contra injeção de prompt, login corporativo, registro de auditoria e limites de uso para controlar custos.</p></section>
+    </div>
+    <aside class="case-aside" aria-label="Resumo do projeto">
+      <h2>Ferramentas usadas</h2>
+      <ul><li>Python</li><li>Streamlit</li><li>IA generativa</li><li>SQLAlchemy</li><li>PostgreSQL ou SQLite</li><li>Login corporativo (Microsoft Entra ID)</li><li>Avisos no Teams</li></ul>
+      <h2>Quer algo parecido?</h2>
+      <p>Posso adaptar a ideia ao processo da sua equipe.</p>
+      <a class="btn btn-primary" href="mailto:vivianefrancodasilva@gmail.com?subject=Conversa%20sobre%20IA%20na%20educa%C3%A7%C3%A3o">Agendar conversa</a>
+      <a class="btn btn-ghost" href="https://github.com/vivianefranco/caselab" target="_blank" rel="noopener">Ver o código</a>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <span>© 2026 Viviane Franco · Consultoria e formação em IA na educação</span>
+    <span><a href="https://www.linkedin.com/in/viviane-francos/" target="_blank" rel="noopener">LinkedIn</a> &nbsp; <a href="https://github.com/vivianefranco" target="_blank" rel="noopener">GitHub</a> &nbsp; <a href="mailto:vivianefrancodasilva@gmail.com">E-mail</a></span>
+  </div>
+</footer>
 </body>
 </html>

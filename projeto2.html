@@ -1,656 +1,71 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transformador de Transcrições com IA | Viviane Franco</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235b2d82'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='30' fill='%23d4a853'%3EVF%3C/text%3E%3C/svg%3E">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --ink: #0f0e17;
-            --paper: #f9f4ef;
-            --accent: #e8643c;
-            --muted: #a7a9be;
-            --light: #fffffe;
-            --mid: #eee8e0;
-        }
-
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: 'Lato', sans-serif;
-            background: var(--paper);
-            color: var(--ink);
-            min-height: 100vh;
-        }
-
-        /* ── HEADER ── */
-        header {
-            position: relative;
-            padding: 5rem 2rem 6rem;
-            overflow: hidden;
-            background: var(--ink);
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.04) 39px, rgba(255,255,255,0.04) 40px),
-                repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.04) 39px, rgba(255,255,255,0.04) 40px);
-        }
-
-        .header-tag {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--accent);
-            display: inline-block;
-            border: 1px solid var(--accent);
-            padding: 0.25rem 0.75rem;
-            border-radius: 2px;
-            margin-bottom: 1.5rem;
-            position: relative;
-            animation: fadeUp 0.6s ease both;
-        }
-
-        h1 {
-            font-family: 'DM Serif Display', serif;
-            font-size: clamp(2.4rem, 6vw, 4.5rem);
-            color: var(--light);
-            line-height: 1.1;
-            max-width: 720px;
-            position: relative;
-            animation: fadeUp 0.6s 0.1s ease both;
-        }
-
-        h1 em {
-            font-style: italic;
-            color: var(--accent);
-        }
-
-        .header-sub {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.85rem;
-            color: var(--muted);
-            margin-top: 1.5rem;
-            position: relative;
-            animation: fadeUp 0.6s 0.2s ease both;
-            letter-spacing: 0.05em;
-        }
-
-        /* Decoração: ícones de formato empilhados */
-        .header-decoration {
-            position: absolute;
-            right: 6%;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            opacity: 0.07;
-        }
-
-        .deco-card {
-            width: 160px;
-            height: 22px;
-            background: white;
-            border-radius: 3px;
-        }
-
-        .deco-card:nth-child(2) { width: 130px; margin-left: 15px; }
-        .deco-card:nth-child(3) { width: 150px; margin-left: 5px; }
-        .deco-card:nth-child(4) { width: 110px; margin-left: 25px; }
-        .deco-card:nth-child(5) { width: 145px; margin-left: 10px; }
-        .deco-card:nth-child(6) { width: 120px; margin-left: 20px; }
-
-        /* ── CONTAINER ── */
-        .container {
-            max-width: 860px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
-
-        /* ── SCREENSHOT ── */
-        .screenshot-wrap {
-            position: relative;
-            margin-bottom: 4rem;
-            animation: fadeUp 0.7s 0.3s ease both;
-        }
-
-        .screenshot-label {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.7rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--muted);
-            margin-bottom: 0.75rem;
-        }
-
-        .screenshot-frame {
-            border: 1px solid rgba(15,14,23,0.12);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 8px 8px 0px var(--ink);
-            background: var(--light);
-        }
-
-        .screenshot-bar {
-            background: var(--ink);
-            height: 32px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 0 14px;
-        }
-
-        .dot { width: 10px; height: 10px; border-radius: 50%; }
-        .dot:nth-child(1) { background: #ff5f57; }
-        .dot:nth-child(2) { background: #ffbd2e; }
-        .dot:nth-child(3) { background: #28c840; }
-
-        .screenshot-wrap img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .screenshot-placeholder {
-            width: 100%;
-            height: 280px;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255,255,255,0.2);
-            font-family: 'DM Mono', monospace;
-            font-size: 0.85rem;
-            letter-spacing: 0.1em;
-        }
-
-        /* ── INTRO ── */
-        .intro-text {
-            font-size: 1.2rem;
-            line-height: 1.85;
-            color: #2d2b3d;
-            font-weight: 300;
-            margin-bottom: 3.5rem;
-            border-left: 3px solid var(--accent);
-            padding-left: 1.5rem;
-            animation: fadeUp 0.7s 0.4s ease both;
-        }
-
-        /* ── SECTION TITLE ── */
-        .section-title {
-            font-family: 'DM Serif Display', serif;
-            font-size: 1.6rem;
-            margin-bottom: 1.5rem;
-            color: var(--ink);
-        }
-
-        /* ── FEATURES ── */
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
-            gap: 1.25rem;
-            margin-bottom: 4rem;
-            animation: fadeUp 0.7s 0.5s ease both;
-        }
-
-        .feature-card {
-            background: var(--light);
-            border: 1px solid var(--mid);
-            border-radius: 6px;
-            padding: 1.5rem;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 4px 4px 0 var(--ink);
-        }
-
-        .feature-icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.75rem;
-            display: block;
-        }
-
-        .feature-card h3 {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
-
-        .feature-card p {
-            font-size: 0.92rem;
-            line-height: 1.6;
-            color: #4a4860;
-        }
-
-        /* ── FORMATS SECTION (dark) ── */
-        .formats-section {
-            background: var(--ink);
-            color: var(--light);
-            border-radius: 8px;
-            padding: 2.5rem;
-            margin-bottom: 4rem;
-            animation: fadeUp 0.7s 0.6s ease both;
-        }
-
-        .formats-section .section-title {
-            color: var(--light);
-            margin-bottom: 0.5rem;
-        }
-
-        .formats-intro {
-            color: var(--muted);
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
-        }
-
-        .formats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
-        .format-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 6px;
-            padding: 1.25rem;
-            transition: background 0.2s, border-color 0.2s;
-        }
-
-        .format-card:hover {
-            background: rgba(232,100,60,0.1);
-            border-color: rgba(232,100,60,0.4);
-        }
-
-        .format-emoji {
-            font-size: 1.4rem;
-            display: block;
-            margin-bottom: 0.6rem;
-        }
-
-        .format-name {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.78rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 0.35rem;
-        }
-
-        .format-desc {
-            font-size: 0.85rem;
-            color: var(--muted);
-            line-height: 1.5;
-        }
-
-        /* ── FLOW SECTION ── */
-        .flow-section {
-            margin-bottom: 4rem;
-            animation: fadeUp 0.7s 0.65s ease both;
-        }
-
-        .flow-steps {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-            border: 1px solid var(--mid);
-            border-radius: 8px;
-            overflow: hidden;
-            margin-top: 1rem;
-            background: var(--light);
-        }
-
-        .flow-step {
-            display: flex;
-            gap: 1.25rem;
-            align-items: flex-start;
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid var(--mid);
-            transition: background 0.2s;
-        }
-
-        .flow-step:last-child { border-bottom: none; }
-        .flow-step:hover { background: #fff8f5; }
-
-        .flow-num {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--accent);
-            background: rgba(232,100,60,0.08);
-            border: 1px solid rgba(232,100,60,0.25);
-            border-radius: 2px;
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        .flow-content h4 {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.8rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--ink);
-            margin-bottom: 0.3rem;
-        }
-
-        .flow-content p {
-            font-size: 0.88rem;
-            color: #4a4860;
-            line-height: 1.55;
-        }
-
-        /* ── TECH STACK ── */
-        .tech-section {
-            margin-bottom: 4rem;
-            animation: fadeUp 0.7s 0.7s ease both;
-        }
-
-        .tech-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-            margin-top: 1rem;
-        }
-
-        .tech-tag {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.78rem;
-            letter-spacing: 0.08em;
-            padding: 0.35rem 0.85rem;
-            border: 1.5px solid var(--ink);
-            border-radius: 2px;
-            background: transparent;
-            transition: background 0.2s, color 0.2s;
-            cursor: default;
-        }
-
-        .tech-tag:hover {
-            background: var(--ink);
-            color: var(--light);
-        }
-
-        /* ── RESULTS ── */
-        .results-section {
-            margin-bottom: 4rem;
-            animation: fadeUp 0.7s 0.75s ease both;
-        }
-
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .result-card {
-            background: var(--light);
-            border: 1px solid var(--mid);
-            border-radius: 6px;
-            padding: 1.5rem 1rem;
-            text-align: center;
-        }
-
-        .result-number {
-            font-family: 'DM Serif Display', serif;
-            font-size: 2.8rem;
-            color: var(--accent);
-            line-height: 1;
-            display: block;
-        }
-
-        .result-label {
-            font-size: 0.82rem;
-            color: var(--muted);
-            margin-top: 0.4rem;
-            line-height: 1.4;
-        }
-
-        /* ── NAV ── */
-        .nav-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 2rem;
-            border-top: 1px solid var(--mid);
-            animation: fadeUp 0.7s 0.85s ease both;
-        }
-
-        .back-button {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.82rem;
-            letter-spacing: 0.08em;
-            color: var(--ink);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            border-bottom: 1px solid currentColor;
-            padding-bottom: 2px;
-            transition: color 0.2s;
-        }
-
-        .back-button:hover { color: var(--accent); }
-
-        .github-link {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.82rem;
-            letter-spacing: 0.08em;
-            color: var(--light);
-            background: var(--ink);
-            text-decoration: none;
-            padding: 0.5rem 1.25rem;
-            border-radius: 3px;
-            transition: background 0.2s;
-        }
-
-        .github-link:hover { background: var(--accent); }
-
-        /* ── ANIMATIONS ── */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(18px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 600px) {
-            .results-grid { grid-template-columns: 1fr; }
-            .header-decoration { display: none; }
-            .formats-section { padding: 1.75rem; }
-            .formats-grid { grid-template-columns: 1fr 1fr; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transcrições que viram material didático | Viviane Franco</title>
+<meta name="description" content="Um sistema em Python que usa IA para transformar transcrições brutas de videoaulas em apostilas, roteiros, resumos e questões, mantendo a essência pedagógica do material original.">
+<meta name="author" content="Viviane Franco">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Transcrições que viram material didático | Viviane Franco">
+<meta property="og:description" content="Um sistema em Python que usa IA para transformar transcrições brutas de videoaulas em apostilas, roteiros, resumos e questões, mantendo a essência pedagógica do material original.">
+<meta property="og:url" content="https://vivianefranco.github.io/projeto2.html">
+<meta property="og:image" content="https://vivianefranco.github.io/images/ciaed-palco.jpg">
+<meta name="theme-color" content="#23204a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2323204a'/%3E%3Ctext x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial,sans-serif' font-weight='700' font-size='30' fill='%23ffffff'%3EVF%3C/text%3E%3Cpath d='M12 50 L52 46' stroke='%23c8195f' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
-
-<header>
-    <div class="header-decoration" aria-hidden="true">
-        <div class="deco-card"></div>
-        <div class="deco-card"></div>
-        <div class="deco-card"></div>
-        <div class="deco-card"></div>
-        <div class="deco-card"></div>
-        <div class="deco-card"></div>
-    </div>
-
-    <div class="container" style="padding-top:0; padding-bottom:0;">
-        <div class="header-tag">projeto — ia generativa</div>
-        <h1>transcrições que viram <em>conteúdo</em></h1>
-        <p class="header-sub">python · api de ia · múltiplos formatos · videoaulas</p>
-    </div>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<header class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="index.html">Viviane Franco<span>.</span></a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="index.html#para-quem">Para quem</a>
+      <a href="index.html#servicos">Serviços</a>
+      <a href="index.html#resultados">Resultados</a>
+      <a href="index.html#sobre">Sobre</a>
+      <a href="blog.html">Blog</a>
+      <a class="btn btn-primary" href="mailto:vivianefrancodasilva@gmail.com?subject=Conversa%20sobre%20IA%20na%20educa%C3%A7%C3%A3o">Agendar conversa</a>
+    </nav>
+  </div>
 </header>
 
-<div class="container">
-
-    <!-- SCREENSHOT -->
-    <div class="screenshot-wrap">
-        <div class="screenshot-label">interface do sistema</div>
-        <div class="screenshot-frame">
-            <div class="screenshot-bar">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
-            <img loading="lazy" src="images/print_transcricao.png" alt="Interface do Transformador de Conteúdo com IA"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="screenshot-placeholder">[ screenshot do sistema ]</div>
-        </div>
-    </div>
-
-    <!-- INTRO -->
-    <p class="intro-text">
-        Sistema em Python que usa IA para transformar transcrições brutas de videoaulas em diferentes formatos de conteúdo educacional — de roteiros de vídeo a apostilas completas. O conteúdo é adaptado automaticamente para cada formato, mantendo a essência pedagógica do material original.
-    </p>
-
-    <!-- FEATURES -->
-    <div class="feature-grid">
-        <div class="feature-card">
-            <span class="feature-icon">🎬</span>
-            <h3>entrada flexível</h3>
-            <p>Aceita transcrições de videoaulas em texto, independente do tamanho ou estrutura, e processa o conteúdo de ponta a ponta.</p>
-        </div>
-        <div class="feature-card">
-            <span class="feature-icon">🔄</span>
-            <h3>múltiplos formatos</h3>
-            <p>Um mesmo conteúdo é transformado em diferentes saídas: roteiro, apostila, resumo, quiz — cada um com sua linguagem própria.</p>
-        </div>
-        <div class="feature-card">
-            <span class="feature-icon">🧠</span>
-            <h3>adaptação inteligente</h3>
-            <p>A IA não apenas reformata: ela reescreve o conteúdo adequando tom, estrutura e profundidade ao formato de destino.</p>
-        </div>
-        <div class="feature-card">
-            <span class="feature-icon">⚙️</span>
-            <h3>critérios customizáveis</h3>
-            <p>Público-alvo, nível de linguagem e estilo são configuráveis, tornando o sistema útil para diferentes contextos educacionais.</p>
-        </div>
-    </div>
-
-    <!-- FORMATS -->
-    <div class="formats-section">
-        <h2 class="section-title">formatos de saída</h2>
-        <p class="formats-intro">A transcrição bruta de uma videoaula pode ser transformada em qualquer um dos formatos abaixo.</p>
-        <div class="formats-grid">
-            <div class="format-card">
-                <span class="format-emoji">🎞️</span>
-                <div class="format-name">roteiro de vídeo</div>
-                <div class="format-desc">Texto estruturado com marcações de cena, falas e ritmo narrativo para gravação.</div>
-            </div>
-            <div class="format-card">
-                <span class="format-emoji">📖</span>
-                <div class="format-name">apostila</div>
-                <div class="format-desc">Material didático completo com seções, conceitos-chave, exemplos e exercícios.</div>
-            </div>
-            <div class="format-card">
-                <span class="format-emoji">📝</span>
-                <div class="format-name">resumo executivo</div>
-                <div class="format-desc">Síntese dos pontos centrais em linguagem direta, ideal para revisão rápida.</div>
-            </div>
-            <div class="format-card">
-                <span class="format-emoji">❓</span>
-                <div class="format-name">banco de questões</div>
-                <div class="format-desc">Questões de fixação geradas a partir do conteúdo da aula, com gabarito.</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- FLOW -->
-    <div class="flow-section">
-        <h2 class="section-title">como funciona</h2>
-        <div class="flow-steps">
-            <div class="flow-step">
-                <div class="flow-num">01</div>
-                <div class="flow-content">
-                    <h4>envio da transcrição</h4>
-                    <p>O usuário cola ou faz upload da transcrição bruta da videoaula diretamente na interface.</p>
-                </div>
-            </div>
-            <div class="flow-step">
-                <div class="flow-num">02</div>
-                <div class="flow-content">
-                    <h4>seleção do formato e parâmetros</h4>
-                    <p>É escolhido o formato de saída desejado e configurados critérios como público-alvo e nível de linguagem.</p>
-                </div>
-            </div>
-            <div class="flow-step">
-                <div class="flow-num">03</div>
-                <div class="flow-content">
-                    <h4>processamento com ia</h4>
-                    <p>O sistema divide o conteúdo em blocos, instrui a IA sobre o formato alvo e processa cada segmento com o contexto adequado.</p>
-                </div>
-            </div>
-            <div class="flow-step">
-                <div class="flow-num">04</div>
-                <div class="flow-content">
-                    <h4>montagem do documento final</h4>
-                    <p>Python consolida todas as partes em um único arquivo estruturado e formatado conforme o tipo de conteúdo gerado.</p>
-                </div>
-            </div>
-            <div class="flow-step">
-                <div class="flow-num">05</div>
-                <div class="flow-content">
-                    <h4>download do material</h4>
-                    <p>O conteúdo transformado fica disponível para download imediato, pronto para uso ou publicação.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- TECH -->
-    <div class="tech-section">
-        <h2 class="section-title">tecnologias utilizadas</h2>
-        <div class="tech-tags">
-            <span class="tech-tag">Python</span>
-            <span class="tech-tag">OpenAI API</span>
-            <span class="tech-tag">Prompt Engineering</span>
-            <span class="tech-tag">Chunking de Texto</span>
-            <span class="tech-tag">Streamlit</span>
-            <span class="tech-tag">python-docx</span>
-            <span class="tech-tag">NLP</span>
-            <span class="tech-tag">Design Instrucional</span>
-        </div>
-    </div>
-
-    <!-- RESULTS -->
-    <div class="results-section">
-        <h2 class="section-title">resultados</h2>
-        <div class="results-grid">
-            <div class="result-card">
-                <span class="result-number">4+</span>
-                <span class="result-label">formatos de conteúdo gerados automaticamente</span>
-            </div>
-            <div class="result-card">
-                <span class="result-number">80%</span>
-                <span class="result-label">redução no tempo de produção de materiais</span>
-            </div>
-            <div class="result-card">
-                <span class="result-number">1→∞</span>
-                <span class="result-label">uma transcrição, múltiplos materiais prontos</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- NAV -->
-    <div class="nav-row">
-        <a href="index.html" class="back-button">← página inicial</a>
-    </div>
-
+<main id="conteudo">
+<div class="page-head">
+  <div class="wrap">
+    <a class="back" href="index.html#resultados">Voltar aos resultados</a>
+    <h1>De videoaula a apostila em um dia</h1>
+    <p class="lead">Um sistema em Python que usa IA para transformar transcrições brutas de videoaulas em apostilas, roteiros, resumos e questões, mantendo a essência pedagógica do material original.</p>
+    <div class="case-result"><span class="before"><span class="del">40 dias</span></span><span class="after">1 dia</span><span class="label">Tempo para produzir a apostila de um curso, numa grande escola de negócios</span></div>
+  </div>
 </div>
-
+<div class="case-body">
+  <div class="wrap">
+    <div class="case-main">
+      <figure class="case-shot"><img src="images/print_transcricao.png" alt="Interface do transformador de transcrições" loading="lazy"><figcaption>Interface do transformador de transcrições</figcaption></figure>
+      <section><h2>O problema</h2><p>Os cursos tinham horas de videoaulas gravadas, mas a apostila de cada curso era escrita do zero. O processo levava semanas e atrasava a publicação.</p></section><section><h2>A solução</h2><p>A ferramenta recebe a transcrição da aula, divide o conteúdo em blocos e pede à IA que reescreva cada parte no formato escolhido, ajustando tom, estrutura e profundidade. Público, nível de linguagem e estilo são configuráveis.</p><p>Formatos possíveis: apostila completa, roteiro de vídeo, resumo executivo e banco de questões com gabarito.</p></section><section><h2>Como funciona</h2><ol><li>Envio da transcrição bruta da videoaula.</li><li>Escolha do formato e dos parâmetros, como público e nível de linguagem.</li><li>Processamento em blocos, com o contexto adequado a cada parte.</li><li>Montagem de um documento único e formatado.</li><li>Revisão humana e publicação.</li></ol></section>
+    </div>
+    <aside class="case-aside" aria-label="Resumo do projeto">
+      <h2>Ferramentas usadas</h2>
+      <ul><li>Python</li><li>API de IA generativa</li><li>Engenharia de prompt</li><li>Divisão de texto em blocos</li><li>Streamlit</li><li>python-docx</li></ul>
+      <h2>Quer algo parecido?</h2>
+      <p>Posso adaptar a ideia ao processo da sua equipe.</p>
+      <a class="btn btn-primary" href="mailto:vivianefrancodasilva@gmail.com?subject=Conversa%20sobre%20IA%20na%20educa%C3%A7%C3%A3o">Agendar conversa</a>
+      
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <span>© 2026 Viviane Franco · Consultoria e formação em IA na educação</span>
+    <span><a href="https://www.linkedin.com/in/viviane-francos/" target="_blank" rel="noopener">LinkedIn</a> &nbsp; <a href="https://github.com/vivianefranco" target="_blank" rel="noopener">GitHub</a> &nbsp; <a href="mailto:vivianefrancodasilva@gmail.com">E-mail</a></span>
+  </div>
+</footer>
 </body>
 </html>

@@ -1,687 +1,253 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viviane Franco | IA aplicada à Educação</title>
-    <meta name="description" content="Viviane Franco — designer instrucional e mestranda em Informática na UNIRIO. Desenvolvo ferramentas de IA generativa para produção de conteúdo educacional e aprendizagem corporativa.">
-    <meta name="author" content="Viviane Franco">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Viviane Franco | IA aplicada à Educação">
-    <meta property="og:description" content="Designer instrucional e mestranda em Informática (UNIRIO). Ferramentas de IA generativa para produção de conteúdo educacional e aprendizagem corporativa.">
-    <meta property="og:url" content="https://vivianefranco.github.io/">
-    <meta property="og:image" content="https://vivianefranco.github.io/images/profile.jpg">
-    <meta name="theme-color" content="#1a1025">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235b2d82'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='30' fill='%23d4a853'%3EVF%3C/text%3E%3C/svg%3E">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --ink: #1a1025;
-            --cream: #faf7f2;
-            --mist: #f0ebe3;
-            --plum: #5b2d82;
-            --violet: #7c3db8;
-            --rose: #c96a9b;
-            --gold: #d4a853;
-            --text-soft: #6b5f7a;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        ::selection { background: var(--rose); color: white; }
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--cream);
-            color: var(--ink);
-            overflow-x: hidden;
-        }
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 1000;
-            opacity: 0.4;
-        }
-
-        /* ── NAV ── */
-        .top-nav {
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            padding: 30px 50px;
-            display: flex;
-            justify-content: flex-end;
-            gap: 30px;
-            z-index: 20;
-        }
-        .top-nav a {
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            transition: color 0.3s;
-        }
-        .top-nav a:hover { color: var(--gold); }
-
-        /* ── HEADER ── */
-        header {
-            min-height: 100vh;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            position: relative;
-            overflow: hidden;
-        }
-        .header-left {
-            background: var(--ink);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 60px 50px 70px;
-            position: relative;
-            z-index: 2;
-        }
-        .header-left::after {
-            content: '';
-            position: absolute;
-            top: 0; right: -1px; bottom: 0;
-            width: 80px;
-            background: var(--ink);
-            clip-path: polygon(0 0, 30% 0, 100% 100%, 0 100%);
-            z-index: 3;
-        }
-        .header-right {
-            background: var(--plum);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .header-right::before {
-            content: '';
-            position: absolute;
-            width: 600px; height: 600px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(196,106,155,0.3) 0%, transparent 70%);
-            top: -100px; right: -100px;
-            pointer-events: none;
-        }
-        .header-right::after {
-            content: '';
-            position: absolute;
-            width: 400px; height: 400px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(212,168,83,0.15) 0%, transparent 70%);
-            bottom: 50px; left: 0;
-            pointer-events: none;
-        }
-
-        /* ── PROFILE ── */
-        .profile-container {
-            position: relative; z-index: 2;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            padding: 50px 40px; flex-shrink: 0;
-            animation: profileIn 1s ease 0.35s both;
-        }
-        @keyframes profileIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        .profile-ring {
-            position: relative; width: 260px; height: 260px;
-            border-radius: 50%; padding: 4px;
-            background: linear-gradient(135deg, var(--rose), var(--gold), var(--violet));
-            box-shadow: 0 0 28px rgba(201, 106, 155, 0.5), 0 0 65px rgba(124, 61, 184, 0.3);
-        }
-        .profile-ring-inner {
-            width: 100%; height: 100%; border-radius: 50%;
-            overflow: hidden; background: var(--plum);
-            position: relative; box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
-        }
-        .profile-img {
-            width: 100%; height: 100%; display: block;
-            object-fit: cover; object-position: center top;
-            border-radius: 50%; filter: contrast(1.04) saturate(1.05);
-            transition: transform 0.5s ease;
-        }
-        .profile-ring:hover .profile-img { transform: scale(1.04); }
-        .profile-ring-inner::after {
-            content: ''; position: absolute; inset: 0; border-radius: 50%;
-            background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.12) 0%, transparent 55%);
-            pointer-events: none; z-index: 2;
-        }
-        .profile-fallback {
-            display: none; width: 100%; height: 100%; border-radius: 50%;
-            background: linear-gradient(135deg, var(--violet) 0%, var(--rose) 100%);
-            align-items: center; justify-content: center; position: relative;
-        }
-        .profile-fallback-initials {
-            font-family: 'DM Serif Display', serif;
-            font-size: 5rem; color: white; letter-spacing: -2px; position: relative; z-index: 1;
-        }
-        .profile-shadow {
-            width: 200px; height: 24px; border-radius: 50%;
-            background: radial-gradient(ellipse, rgba(0,0,0,0.45) 0%, transparent 70%);
-            margin-top: 18px; filter: blur(8px);
-        }
-        .deco-circle {
-            position: absolute; border-radius: 50%;
-            border: 1px solid rgba(255,255,255,0.12); pointer-events: none;
-        }
-        .deco-1 { width: 200px; height: 200px; top: 40px; right: 40px; }
-        .deco-2 { width: 120px; height: 120px; top: 80px; right: 80px; }
-        .deco-3 { width: 60px; height: 60px; top: 110px; right: 110px; border-color: var(--gold); opacity: 0.4; }
-
-        /* ── HEADER TEXT ── */
-        .eyebrow {
-            font-size: 0.7rem; font-weight: 600; letter-spacing: 0.25em;
-            text-transform: uppercase; color: var(--rose); margin-bottom: 20px;
-        }
-        .header-name {
-            font-family: 'DM Serif Display', serif;
-            font-size: clamp(3rem, 5vw, 5rem);
-            color: white; line-height: 1; margin-bottom: 30px;
-        }
-        .header-name em { font-style: italic; color: var(--gold); }
-        .header-tagline {
-            color: rgba(255,255,255,0.65); font-size: 1rem; font-weight: 300;
-            line-height: 1.75; max-width: 420px; margin-bottom: 18px;
-        }
-        .header-tagline strong { color: rgba(255,255,255,0.9); font-weight: 500; }
-        .social-links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
-        .social-links a {
-            display: flex; align-items: center; gap: 8px;
-            color: rgba(255,255,255,0.6); text-decoration: none;
-            font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
-            border: 1px solid rgba(255,255,255,0.15); padding: 10px 18px;
-            border-radius: 100px; transition: all 0.3s ease;
-        }
-        .social-links a:hover {
-            color: white; border-color: var(--rose); background: rgba(201,106,155,0.12);
-        }
-        .scroll-hint {
-            position: absolute; bottom: 30px; right: 50px;
-            color: rgba(255,255,255,0.3); font-size: 0.68rem;
-            letter-spacing: 0.2em; text-transform: uppercase;
-            writing-mode: vertical-rl; display: flex; align-items: center; gap: 10px; z-index: 10;
-        }
-        .scroll-hint::after {
-            content: ''; width: 1px; height: 50px;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
-            animation: scrollLine 1.5s ease-in-out infinite;
-        }
-        @keyframes scrollLine { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .header-left > * { animation: fadeUp 0.8s ease forwards; opacity: 0; }
-        .eyebrow { animation-delay: 0.1s; }
-        .header-name { animation-delay: 0.25s; }
-        .header-tagline { animation-delay: 0.4s; }
-        .social-links { animation-delay: 0.55s; }
-
-        /* ── MAIN ── */
-        main { max-width: 1100px; margin: 0 auto; padding: 100px 40px; }
-        .section-label {
-            font-size: 0.68rem; font-weight: 600; letter-spacing: 0.25em;
-            text-transform: uppercase; color: var(--rose); margin-bottom: 12px;
-            display: flex; align-items: center; gap: 12px;
-        }
-        .section-label::before { content: ''; width: 30px; height: 1px; background: var(--rose); }
-        .section-title {
-            font-family: 'DM Serif Display', serif;
-            font-size: clamp(2rem, 3.5vw, 3rem);
-            color: var(--ink); margin-bottom: 40px; line-height: 1.15;
-        }
-        .section-title em { font-style: italic; color: var(--plum); }
-        section { margin-bottom: 110px; }
-
-        .sobre-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 80px; align-items: start; }
-        .sobre-text p {
-            color: var(--text-soft); font-size: 1.05rem;
-            line-height: 1.85; margin-bottom: 20px;
-        }
-        .sobre-text p strong { color: var(--ink); font-weight: 500; }
-        .sobre-sidebar { padding-top: 20px; }
-        .stat-item { padding: 28px 0; border-bottom: 1px solid var(--mist); }
-        .stat-number {
-            font-family: 'DM Serif Display', serif;
-            font-size: 2.8rem; color: var(--plum); line-height: 1;
-        }
-        .stat-label {
-            font-size: 0.8rem; color: var(--text-soft); margin-top: 4px;
-            text-transform: uppercase; letter-spacing: 0.1em;
-        }
-
-        .process-grid {
-            display: grid; grid-template-columns: repeat(5, 1fr);
-            gap: 0; border: 1px solid var(--mist); border-radius: 16px; overflow: hidden;
-        }
-        .process-step { padding: 35px 25px; background: white; transition: background 0.3s; }
-        .process-step:not(:last-child) { border-right: 1px solid var(--mist); }
-        .process-step:hover { background: var(--ink); }
-        .process-step:hover .step-num, .process-step:hover .step-title, .process-step:hover .step-desc { color: rgba(255,255,255,0.8); }
-        .process-step:hover .step-num { color: var(--gold); }
-        .step-num {
-            font-family: 'DM Serif Display', serif; font-size: 2.5rem;
-            color: var(--mist); line-height: 1; margin-bottom: 20px; transition: color 0.3s;
-        }
-        .step-title {
-            font-size: 0.85rem; font-weight: 600; text-transform: uppercase;
-            letter-spacing: 0.08em; color: var(--ink); margin-bottom: 10px; transition: color 0.3s;
-        }
-        .step-desc { font-size: 0.8rem; color: var(--text-soft); line-height: 1.6; transition: color 0.3s; }
-
-        /* ── RESULTADOS / IMPACTO ── */
-        .results-section { margin-bottom: 110px; }
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-        .result-card {
-            background: white;
-            border: 1px solid var(--mist);
-            border-top: 3px solid var(--rose);
-            border-radius: 16px;
-            padding: 36px 30px;
-            display: flex;
-            transition: all 0.3s ease;
-        }
-        .result-card:hover {
-            background: var(--ink);
-            border-color: var(--ink);
-            border-top-color: var(--gold);
-            transform: translateY(-4px);
-            box-shadow: 0 16px 40px rgba(91,45,130,0.15);
-        }
-        .result-header {
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--rose);
-            margin-bottom: 18px;
-        }
-        .result-number {
-            display: block;
-            font-family: 'DM Serif Display', serif;
-            font-size: 3.4rem;
-            line-height: 1;
-            color: var(--plum);
-            margin-bottom: 18px;
-            transition: color 0.3s;
-        }
-        .result-label {
-            display: block;
-            font-size: 0.9rem;
-            line-height: 1.65;
-            color: var(--text-soft);
-            transition: color 0.3s;
-        }
-        .result-label strong {
-            display: block;
-            color: var(--ink);
-            font-weight: 600;
-            margin-bottom: 8px;
-            transition: color 0.3s;
-        }
-        .result-card:hover .result-number { color: var(--gold); }
-        .result-card:hover .result-label { color: rgba(255,255,255,0.7); }
-        .result-card:hover .result-label strong { color: white; }
-
-        .skills-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px;
-        }
-        .skill-tag {
-            background: white; border: 1px solid var(--mist); padding: 16px 20px;
-            border-radius: 10px; font-size: 0.88rem; color: var(--ink);
-            display: flex; align-items: center; gap: 10px; transition: all 0.25s; cursor: default;
-        }
-        .skill-tag::before {
-            content: ''; width: 6px; height: 6px; border-radius: 50%;
-            background: var(--rose); flex-shrink: 0;
-        }
-        .skill-tag:hover {
-            border-color: var(--plum); color: var(--plum); transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(91,45,130,0.08);
-        }
-
-        .projects-list { display: flex; flex-direction: column; gap: 10px; }
-        .project-item {
-            display: grid; grid-template-columns: auto 1fr auto; align-items: center;
-            gap: 30px; padding: 32px 36px; background: white; border-radius: 12px;
-            text-decoration: none; color: var(--ink); transition: all 0.3s ease;
-            border: 1px solid var(--mist); border-left: 3px solid rgba(91,45,130,0.2); cursor: pointer;
-        }
-        .project-item:hover {
-            border-color: var(--plum); border-left-color: var(--plum);
-            transform: translateX(6px); box-shadow: -4px 0 0 var(--plum), 0 12px 35px rgba(91,45,130,0.08);
-        }
-        .project-num {
-            font-family: 'DM Serif Display', serif; font-size: 1.2rem;
-            color: var(--mist); min-width: 40px; transition: color 0.3s;
-        }
-        .project-item:hover .project-num { color: var(--plum); }
-        .project-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 6px; }
-        .project-desc { font-size: 0.88rem; color: var(--text-soft); line-height: 1.55; }
-        .project-cta {
-            display: flex; align-items: center; gap: 7px; font-size: 0.75rem;
-            font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
-            color: var(--text-soft); background: var(--mist); padding: 8px 14px;
-            border-radius: 100px; white-space: nowrap; flex-shrink: 0; transition: all 0.3s ease;
-        }
-        .project-cta svg { transition: transform 0.3s ease; }
-        .project-item:hover .project-cta { background: var(--plum); color: white; }
-        .project-item:hover .project-cta svg { transform: translateX(3px); }
-
-        footer {
-            background: var(--ink); padding: 70px 40px; text-align: center;
-            position: relative; overflow: hidden;
-        }
-        footer::before {
-            content: 'VF'; position: absolute; font-family: 'DM Serif Display', serif;
-            font-size: 20rem; color: rgba(255,255,255,0.02); left: 50%; top: 50%;
-            transform: translate(-50%, -50%); user-select: none; pointer-events: none;
-        }
-        .footer-title {
-            font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 4vw, 3rem);
-            color: white; margin-bottom: 16px;
-        }
-        .footer-sub { color: rgba(255,255,255,0.4); font-size: 0.9rem; margin-bottom: 40px; }
-        .contact-btn {
-            display: inline-block; padding: 16px 40px; background: var(--rose);
-            color: white; text-decoration: none; border-radius: 100px; font-size: 0.9rem;
-            font-weight: 500; letter-spacing: 0.05em; transition: all 0.3s;
-        }
-        .contact-btn:hover {
-            background: var(--gold); color: var(--ink); transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(212,168,83,0.3);
-        }
-        .footer-copy { margin-top: 60px; color: rgba(255,255,255,0.2); font-size: 0.78rem; letter-spacing: 0.1em; }
-
-        .project-badge {
-            display: inline-block; vertical-align: middle; margin-left: 8px;
-            font-size: 0.62rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
-            color: var(--ink); background: var(--gold); padding: 3px 9px; border-radius: 100px;
-        }
-        a:focus-visible, .project-item:focus-visible {
-            outline: 2px solid var(--gold); outline-offset: 3px;
-        }
-        .skip-link {
-            position: absolute; left: -9999px; top: 10px; z-index: 2000;
-            background: var(--gold); color: var(--ink); padding: 10px 16px; border-radius: 8px;
-            text-decoration: none; font-weight: 600;
-        }
-        .skip-link:focus { left: 10px; }
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { animation: none !important; transition: none !important; }
-            .header-left > * { opacity: 1; }
-            html { scroll-behavior: auto; }
-        }
-
-        @media (max-width: 900px) {
-            header { grid-template-columns: 1fr; min-height: auto; }
-            .top-nav { justify-content: center; padding: 20px; }
-            .header-left { padding: 100px 30px 60px; order: 2; }
-            .header-left::after { display: none; }
-            .header-right { order: 1; min-height: 340px; }
-            .profile-ring { width: 200px; height: 200px; }
-            .profile-shadow { width: 150px; }
-            .sobre-grid { grid-template-columns: 1fr; gap: 40px; }
-            .process-grid { grid-template-columns: 1fr 1fr; }
-            .process-step:nth-child(2) { border-right: none; }
-            .process-step:not(:last-child) { border-bottom: 1px solid var(--mist); }
-            .results-grid { grid-template-columns: 1fr; }
-            main { padding: 70px 25px; }
-        }
-        @media (max-width: 600px) {
-            .process-grid { grid-template-columns: 1fr; }
-            .process-step:not(:last-child) { border-right: none; }
-            .project-item { grid-template-columns: 1fr auto; gap: 16px; padding: 22px 18px; }
-            .project-num { display: none; }
-            .project-cta span { display: none; }
-            .project-cta { padding: 8px 10px; }
-            .profile-ring { width: 160px; height: 160px; }
-            .profile-shadow { width: 120px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Viviane Franco | Consultoria e formação em IA na educação</title>
+<meta name="description" content="Formações, consultoria e ferramentas de IA para equipes de T&D, órgãos públicos e redes de ensino. Designer instrucional e mestranda em Informática (UNIRIO).">
+<meta name="author" content="Viviane Franco">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Viviane Franco | Consultoria e formação em IA na educação">
+<meta property="og:description" content="Formações, consultoria e ferramentas de IA para equipes de T&D, órgãos públicos e redes de ensino. Designer instrucional e mestranda em Informática (UNIRIO).">
+<meta property="og:url" content="https://vivianefranco.github.io/">
+<meta property="og:image" content="https://vivianefranco.github.io/images/ciaed-palco.jpg">
+<meta name="theme-color" content="#23204a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2323204a'/%3E%3Ctext x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial,sans-serif' font-weight='700' font-size='30' fill='%23ffffff'%3EVF%3C/text%3E%3Cpath d='M12 50 L52 46' stroke='%23c8195f' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
-<a href="#sobre" class="skip-link">Pular para o conteúdo</a>
-
-<header>
-    <nav class="top-nav" aria-label="Navegação principal">
-        <a href="#sobre">Sobre</a>
-        <a href="#projetos">Projetos</a>
-        <a href="blog.html">Blog</a>
-        <a href="#contato">Contato</a>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<header class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="index.html">Viviane Franco<span>.</span></a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="#para-quem">Para quem</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#resultados">Resultados</a>
+      <a href="#sobre">Sobre</a>
+      <a href="blog.html">Blog</a>
+      <a class="btn btn-primary" href="mailto:vivianefrancodasilva@gmail.com?subject=Conversa%20sobre%20IA%20na%20educa%C3%A7%C3%A3o">Agendar conversa</a>
     </nav>
-    <div class="header-left">
-        <p class="eyebrow">IA aplicada à Educação · Mestranda em Informática (UNIRIO)</p>
-        <h1 class="header-name">Viviane<br><em>Franco</em></h1>
-        <p class="header-tagline">
-            <strong>Construindo a ponte entre Linguagem, Educação e Tecnologia.</strong> 
-            Sou designer instrucional na educação executiva da FGV e desenvolvo ferramentas de IA generativa que encurtam a produção de conteúdo educacional — de dias para minutos — sem abrir mão da qualidade pedagógica.
-        </p>
-        <div class="social-links">
-            <a href="https://github.com/vivianefranco" target="_blank" rel="noopener" aria-label="GitHub">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                GitHub
-            </a>
-            <a href="https://www.linkedin.com/in/viviane-francos/" target="_blank" rel="noopener" aria-label="LinkedIn">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                LinkedIn
-            </a>
-        </div>
-    </div>
-
-    <div class="header-right">
-        <div class="deco-circle deco-1"></div>
-        <div class="deco-circle deco-2"></div>
-        <div class="deco-circle deco-3"></div>
-        <div class="profile-container" id="profileContainer">
-            <div class="profile-ring">
-                <div class="profile-ring-inner">
-                    <img src="images/profile.jpg" alt="Foto de Viviane Franco" class="profile-img" width="480" height="640" decoding="async" id="profileImg" onerror="handlePhotoError()">
-                    <div class="profile-fallback" id="profileFallback" aria-label="Viviane Franco">
-                        <span class="profile-fallback-initials">VF</span>
-                    </div>
-                </div>
-            </div>
-            <div class="profile-shadow"></div>
-        </div>
-    </div>
-    <div class="scroll-hint" aria-hidden="true">scroll</div>
+  </div>
 </header>
 
-<main>
-    <section id="sobre">
-        <div class="section-label">Trajetória</div>
-        <div class="sobre-grid">
-            <div class="sobre-text">
-                <h2 class="section-title">Onde a <em>pedagogia</em> encontra o código</h2>
-                <p>
-                    Sou <strong>mestranda em Informática na UNIRIO</strong>, onde pesquiso o uso de Inteligência Artificial no design instrucional de cursos executivos a distância. Minha formação em Letras e minha atuação em Design Instrucional na FGV me deram uma base única: entendo como as pessoas aprendem, como a linguagem estrutura o pensamento e como escalar processos com rigor de qualidade.
-                </p>
-                <p>
-                    Hoje, aplico esse repertório para <strong>desenvolver e curar soluções de Inteligência Artificial</strong>. Atuo na interseção entre engenharia de software e comunicação, criando fluxos de automação, engenharia de prompt avançada e sistemas de validação de LLMs que exigem tanto precisão técnica quanto clareza narrativa.
-                </p>
-                <p>
-                    Acredito que a tecnologia mais poderosa é aquela que consegue traduzir complexidade em acessibilidade. Meu objetivo é levar a IA para a educação corporativa e para times de aprendizagem de forma responsável — com revisão humana, foco em quem aprende e resultados mensuráveis.
-                </p>
-            </div>
-            <div class="sobre-sidebar">
-                <div class="stat-item">
-                    <div class="stat-number">MSc</div>
-                    <div class="stat-label">Mestranda em Informática · UNIRIO</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">12+</div>
-                    <div class="stat-label">Anos em Educação e Linguagens</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">IA</div>
-                    <div class="stat-label">Pesquisa: IA no Design Instrucional</div>
-                </div>
-            </div>
-        </div>
-    </section>
+<main id="conteudo">
 
-    <section>
-        <div class="section-label">Método</div>
-        <h2 class="section-title">Como estruturo <em>soluções com IA</em></h2>
-        <div class="process-grid">
-            <div class="process-step">
-                <div class="step-num">01</div>
-                <div class="step-title">Descoberta</div>
-                <div class="step-desc">Análise de requisitos e mapeamento de viabilidade técnica</div>
-            </div>
-            <div class="process-step">
-                <div class="step-num">02</div>
-                <div class="step-title">Prototipagem</div>
-                <div class="step-desc">Engenharia de prompt e testes iniciais com LLMs</div>
-            </div>
-            <div class="process-step">
-                <div class="step-num">03</div>
-                <div class="step-title">Integração</div>
-                <div class="step-desc">Conexão via API e automação de fluxos de trabalho</div>
-            </div>
-            <div class="process-step">
-                <div class="step-num">04</div>
-                <div class="step-title">Validação</div>
-                <div class="step-desc">Curadoria linguística e verificação factual rigorosa</div>
-            </div>
-            <div class="process-step">
-                <div class="step-num">05</div>
-                <div class="step-title">Evolução</div>
-                <div class="step-desc">Monitoramento de métricas e refinamento contínuo</div>
-            </div>
-        </div>
-    </section>
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap">
+    <div>
+      <p class="hero-kicker">Consultoria e formação em IA na educação</p>
+      <h1 id="hero-title">Ajudo quem ensina a usar IA <del>no improviso</del> <ins>com método, segurança e resultado</ins>.</h1>
+      <p class="hero-lead">Formações, consultoria e ferramentas sob medida para equipes de T&amp;D, órgãos públicos e redes de ensino. Sou designer instrucional desde 2019, uso IA todos os dias na produção de cursos e pesquiso o tema no mestrado em Informática da UNIRIO.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="mailto:vivianefrancodasilva@gmail.com?subject=Conversa%20sobre%20IA%20na%20educa%C3%A7%C3%A3o">Agendar uma conversa</a>
+        <a class="btn btn-ghost" href="#servicos">Ver serviços</a>
+      </div>
+    </div>
+    <figure class="hero-photo">
+      <img src="images/ciaed-palco.jpg" alt="Viviane Franco palestrando no 21º CIAED, com o slide Revolucionando a educação ao fundo" width="720" height="960">
+      <figcaption>Palestra no 21º CIAED, congresso da ABED</figcaption>
+    </figure>
+  </div>
+</section>
 
-    <!-- RESULTADOS / IMPACTO -->
-    <section class="results-section">
-        <div class="section-label">Resultados</div>
-        <h2 class="section-title">Ecossistema de <em>IA</em> &amp; Impacto de Negócio</h2>
-        <div class="results-grid">
-            <div class="result-card">
-                <div>
-                    <div class="result-header">Ferramenta 01</div>
-                    <span class="result-number">-97%</span>
-                    <span class="result-label"><strong>Transcrição de Vídeo p/ Apostila:</strong> Redução drástica no tempo de elaboração de 40 dias para apenas 1 dia, gerando alta eficiência operacional.</span>
-                </div>
-            </div>
-            <div class="result-card">
-                <div>
-                    <div class="result-header">Ferramenta 02 (DocuMind)</div>
-                    <span class="result-number">-99,9%</span>
-                    <span class="result-label"><strong>Revisor RAG de Textos (+100 pgs):</strong> Eliminação de custos externos de revisão, encolhendo o tempo de 3 dias para 10 minutos por apostila.</span>
-                </div>
-            </div>
-            <div class="result-card">
-                <div>
-                    <div class="result-header">Ferramenta 03</div>
-                    <span class="result-number">-95%</span>
-                    <span class="result-label"><strong>Gerador de Questões:</strong> Adaptação pedagógica institucional automatizada, reduzindo o ciclo de criação de 10 dias para 30 minutos.</span>
-                </div>
-            </div>
-        </div>
-    </section>
+<section class="proof" aria-labelledby="proof-title">
+  <div class="wrap">
+    <h2 id="proof-title">Formações, palestras e projetos recentes</h2>
+    <ul class="proof-list">
+      <li><strong>TRT da 4ª Região</strong><span>Oficina de IA e metodologias ativas para servidores que atuam na docência corporativa</span></li>
+      <li><strong>Professores de Santana de Parnaíba (SP)</strong><span>Formação em IA generativa para o planejamento e a criação de atividades</span></li>
+      <li><strong>Escola Municipal Joaquim Peçanha (RJ)</strong><span>Formação de professores na Baixada Fluminense</span></li>
+      <li><strong>21º CIAED (ABED)</strong><span>Palestra sobre IA para criar planos de aula, elaborar questões e corrigir exercícios</span></li>
+      <li><strong>Uma grande escola de negócios</strong><span>Ferramentas de IA para a produção de cursos de educação executiva</span></li>
+      <li><strong>Hackathon de inovação</strong><span>Equipe vencedora, com uma plataforma que automatiza a criação de medalhas digitais</span></li>
+    </ul>
+  </div>
+</section>
 
-    <section>
-        <div class="section-label">Habilidades</div>
-        <h2 class="section-title"><em>Stack</em> e Competências</h2>
-        <div class="skills-grid">
-            <div class="skill-tag">Python &amp; Manipulação de Dados</div>
-            <div class="skill-tag">Engenharia de Prompt Avançada</div>
-            <div class="skill-tag">Integração de APIs (LLMs)</div>
-            <div class="skill-tag">RAG e Grounding</div>
-            <div class="skill-tag">Streamlit</div>
-            <div class="skill-tag">Curadoria e Validação de IA</div>
-            <div class="skill-tag">Automação de Fluxos (n8n, Zapier)</div>
-            <div class="skill-tag">Design Instrucional &amp; UX Writing</div>
-            <div class="skill-tag">Metodologias Ativas</div>
-            <div class="skill-tag">Gestão Ágil de Projetos</div>
-            <div class="skill-tag">Comunicação Técnica</div>
-        </div>
-    </section>
+<section id="para-quem" aria-labelledby="para-quem-title">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="para-quem-title">Para quem eu trabalho</h2>
+      <p>O ponto de partida é sempre o mesmo: pessoas que ensinam e querem usar IA no próprio trabalho, sem perder a qualidade pedagógica. O que muda é o contexto.</p>
+    </div>
+    <div class="audiences">
+      <div class="audience">
+        <h3>Empresas e equipes de T&amp;D</h3>
+        <p>Para quem produz treinamentos e quer ganhar tempo sem perder qualidade.</p>
+        <ul>
+          <li>Letramento em IA para a equipe de aprendizagem</li>
+          <li>IA na produção de conteúdo e de avaliações</li>
+          <li>Trilhas e metodologias ativas com apoio de IA</li>
+        </ul>
+      </div>
+      <div class="audience">
+        <h3>Setor público e escolas de governo</h3>
+        <p>Para tribunais, escolas judiciais e de governo que precisam capacitar servidores com responsabilidade.</p>
+        <ul>
+          <li>Oficinas de IA generativa para servidores e instrutores</li>
+          <li>Uso seguro e ético, com atenção à LGPD</li>
+          <li>Materiais abertos e reaproveitáveis pela instituição</li>
+        </ul>
+      </div>
+      <div class="audience">
+        <h3>Escolas e redes de ensino</h3>
+        <p>Para professores que querem usar IA para planejar, avaliar e personalizar o ensino.</p>
+        <ul>
+          <li>Formação de professores com demonstrações ao vivo</li>
+          <li>Planos de aula, questões e correção com IA</li>
+          <li>Orientações para o uso responsável com estudantes</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <section id="projetos">
-        <div class="section-label">Portfólio</div>
-        <h2 class="section-title">Projetos <em>em destaque</em></h2>
-        <div class="projects-list">
+<section id="servicos" class="services" aria-labelledby="servicos-title">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="servicos-title">Três formas de trabalharmos juntos</h2>
+      <p>Cada proposta é montada a partir de um diagnóstico do público: o que as pessoas já sabem, o que precisam fazer e quais ferramentas a instituição já usa.</p>
+    </div>
+    <div class="service">
+      <h3>Formações e capacitações</h3>
+      <div>
+        <p>Letramento em IA para equipes, professores e servidores, com a ferramenta que a organização já usa: Copilot, ChatGPT, Claude ou Gemini. Boa parte do tempo é prática, com situações reais do trabalho de quem participa.</p>
+        <p class="formats">Oficinas, cursos com carga horária definida e palestras, presenciais ou on-line.</p>
+      </div>
+    </div>
+    <div class="service">
+      <h3>Consultoria em design instrucional e T&amp;D</h3>
+      <div>
+        <p>Apoio para integrar a IA à produção de cursos, do planejamento à revisão do material: mapeamento do processo, escolha de ferramentas, prompts e fluxos de trabalho, e diretrizes de uso responsável para a equipe.</p>
+        <p class="formats">Diagnóstico, plano de implantação e acompanhamento.</p>
+      </div>
+    </div>
+    <div class="service">
+      <h3>Ferramentas sob medida</h3>
+      <div>
+        <p>Revisores de texto, geradores de questões, conversores de transcrições em apostilas e simuladores de casos, desenvolvidos para o processo da sua equipe e sempre com revisão humana no fluxo.</p>
+        <p class="formats">Protótipo, testes com a equipe e entrega documentada.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-            <a href="projeto-revisor.html" class="project-item">
-                <div class="project-num">01</div>
-                <div>
-                    <div class="project-title">DocuMind AI — Revisor Automático de Textos</div>
-                    <div class="project-desc">Sistema em Python que alia NLP à manipulação avançada de documentos (.docx), resolvendo a perda de formatação em revisões de textos longos via LLMs.</div>
-                </div>
-                <div class="project-cta">
-                    <span>Ver Case Study</span>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </div>
-            </a>
+<section id="resultados" aria-labelledby="resultados-title">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="resultados-title">Resultados na produção de cursos</h2>
+      <p>Em uma grande escola de negócios, criei ferramentas de IA que mudaram o ritmo da produção de cursos de educação executiva.</p>
+    </div>
+    <div class="results">
+      <a class="result" href="projeto2.html">
+        <h3>Apostilas a partir de videoaulas</h3>
+        <span class="before"><span class="del">40 dias</span></span>
+        <span class="after">1 dia</span>
+        <p>Transcrições de videoaulas viram apostilas estruturadas, prontas para revisão.</p>
+        <span class="more">Ver o case</span>
+      </a>
+      <a class="result" href="projeto-revisor.html">
+        <h3>Revisão de textos longos</h3>
+        <span class="before"><span class="del">3 dias</span></span>
+        <span class="after">10 min</span>
+        <p>Revisão gramatical e de estilo de apostilas com mais de 100 páginas, sem perder a formatação.</p>
+        <span class="more">Ver o case</span>
+      </a>
+      <a class="result" href="projeto3.html">
+        <h3>Questões de avaliação</h3>
+        <span class="before"><span class="del">10 dias</span></span>
+        <span class="after">30 min</span>
+        <p>Questões de múltipla escolha alinhadas às rubricas da instituição, com gabarito e justificativa.</p>
+        <span class="more">Ver o case</span>
+      </a>
+    </div>
+    <p class="results-note">Projeto autoral em desenvolvimento: o <a href="caselab.html">CaseLab</a>, em que a IA monta trilhas de aprendizagem a partir de um problema real da equipe. E o material aberto da <a href="https://vivianefranco.github.io/formacao_trt_4/">oficina para o TRT da 4ª Região</a>.</p>
+  </div>
+</section>
 
-            <a href="projeto2.html" class="project-item">
-                <div class="project-num">02</div>
-                <div>
-                    <div class="project-title">Transformador de Transcrições de Videoaulas</div>
-                    <div class="project-desc">Aplicação baseada em IA para adaptação automática de transcrições brutas em resumos, artigos e roteiros estruturados.</div>
-                </div>
-                <div class="project-cta">
-                    <span>Ver Case Study</span>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </div>
-            </a>
+<section class="formacoes" aria-labelledby="formacoes-title">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="formacoes-title">Em sala, no palco e com a equipe</h2>
+    </div>
+    <div class="gallery">
+      <figure class="tall">
+        <img src="images/formacao-escola.jpg" alt="Viviane conduzindo formação para professores, com a tela do projetor mostrando um chat de IA" loading="lazy" width="768" height="1024">
+        <figcaption><strong>Formação de professores</strong>Escola Municipal Joaquim Peçanha, Baixada Fluminense (RJ)</figcaption>
+      </figure>
+      <figure>
+        <img src="images/ciaed-plateia.jpg" alt="Viviane palestrando para a plateia do 21º CIAED" loading="lazy" width="768" height="1024">
+        <figcaption><strong>Palestra</strong>21º CIAED, congresso da ABED</figcaption>
+      </figure>
+      <figure>
+        <img src="images/formacao-palestra.jpg" alt="Viviane apresentando sobre IA na educação para uma turma" loading="lazy" width="768" height="1024">
+        <figcaption><strong>Apresentação</strong>IA generativa na educação</figcaption>
+      </figure>
+      <figure class="wide">
+        <img src="images/hackathon.jpg" alt="Viviane e a equipe vencedora do hackathon" loading="lazy" width="1024" height="680">
+        <figcaption><strong>Hackathon de inovação</strong>Equipe vencedora</figcaption>
+      </figure>
+    </div>
+    <p class="results-note">Veja também o <a href="https://www.youtube.com/watch?v=nLokundx0uA" target="_blank" rel="noopener">vídeo da formação com professores de Santana de Parnaíba</a>.</p>
+  </div>
+</section>
 
-            <a href="projeto3.html" class="project-item">
-                <div class="project-num">03</div>
-                <div>
-                    <div class="project-title">Gerador de Questões para Pós-Graduação</div>
-                    <div class="project-desc">Sistema escalável para geração de questões de múltipla escolha com gabarito e justificativa, validado por especialistas da área.</div>
-                </div>
-                <div class="project-cta">
-                    <span>Ver Case Study</span>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </div>
-            </a>
+<section class="method" aria-labelledby="metodo-title">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="metodo-title">Como funciona</h2>
+    </div>
+    <ol class="steps">
+      <li><h3>Conversa inicial</h3><p>Entendo o contexto, o público e o que a instituição quer alcançar.</p></li>
+      <li><h3>Diagnóstico e proposta</h3><p>Levanto o que as pessoas já sabem e proponho formato, conteúdo, carga horária e prazos.</p></li>
+      <li><h3>Execução</h3><p>Formação, consultoria ou ferramenta, com prática a partir de situações reais e material de apoio.</p></li>
+      <li><h3>Avaliação</h3><p>Ouço quem participou, meço o que mudou e indico os próximos passos.</p></li>
+    </ol>
+  </div>
+</section>
 
-            <a href="caselab.html" class="project-item">
-                <div class="project-num">04</div>
-                <div>
-                    <div class="project-title">CaseLab — Aprender resolvendo um problema real <span class="project-badge">Novo</span></div>
-                    <div class="project-desc">Plataforma em Streamlit em que a IA rascunha trilhas de aprendizagem a partir de um problema real da equipe, faz mentoria individual e sintetiza a turma — sempre com revisão humana da área de T&amp;D.</div>
-                </div>
-                <div class="project-cta">
-                    <span>Ver Case Study</span>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </div>
-            </a>
+<section id="sobre" class="about" aria-labelledby="sobre-title">
+  <div class="wrap">
+    <figure class="about-photo">
+      <img src="images/profile.jpg" alt="Retrato de Viviane Franco, sorrindo, de óculos" loading="lazy" width="480" height="640">
+    </figure>
+    <div>
+      <h2 id="sobre-title">Da sala de aula à IA aplicada à educação</h2>
+      <p>Sou formada em Letras pela UERJ, fui professora por muitos anos e, desde 2019, trabalho como designer instrucional em cursos de educação executiva. Fui uma das primeiras a levar a IA para a produção desses cursos: desenhei processos, usos e ferramentas, incluindo automações com Python e APIs de IA.</p>
+      <p>Levo para as formações a experiência de quem usa IA todos os dias para ensinar, com o cuidado de quem conhece a linguagem e o processo de aprendizagem.</p>
+      <ul class="timeline">
+        <li><span class="when">Antes de 2019</span><span>Professora em instituições como Eleva Educação, UERJ (Licom e Unati), Yázigi e Wizard</span></li>
+        <li><span class="when">2019 – hoje</span><span>Designer instrucional em educação executiva, com foco em IA na produção de cursos</span></li>
+        <li><span class="when">Formação</span><span>Letras (licenciatura e bacharelado) pela UERJ e especialização em Liderança e Inovação</span></li>
+        <li><span class="when">2026</span><span>Mestrado em Informática na UNIRIO, pesquisando IA no design instrucional, e consultoria em IA na educação</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-        </div>
-    </section>
+<section id="contato" class="contact" aria-labelledby="contato-title">
+  <div class="wrap">
+    <h2 id="contato-title">Vamos conversar sobre a sua equipe?</h2>
+    <p>Conte em poucas linhas quem é o público e o que você precisa. Eu respondo com perguntas e uma primeira ideia de formato.</p>
+    <div class="contact-actions">
+      <a class="btn btn-primary" href="mailto:vivianefrancodasilva@gmail.com?subject=Conversa%20sobre%20IA%20na%20educa%C3%A7%C3%A3o">Escrever para mim</a>
+      <a class="btn btn-ghost" href="https://www.linkedin.com/in/viviane-francos/" target="_blank" rel="noopener">Falar pelo LinkedIn</a>
+    </div>
+    <p class="contact-mail">Ou escreva direto para <a href="mailto:vivianefrancodasilva@gmail.com">vivianefrancodasilva@gmail.com</a></p>
+  </div>
+</section>
+
 </main>
-
-<footer id="contato">
-    <p class="footer-title">Vamos construir algo juntos?</p>
-    <p class="footer-sub">Aberta a colaborações, consultorias e projetos de IA na educação e na aprendizagem corporativa.</p>
-    <a href="mailto:vivianefrancodasilva@gmail.com" class="contact-btn">Entre em Contato</a>
-    <p class="footer-copy">© 2026 Viviane Franco — Todos os direitos reservados</p>
+<footer class="site-footer">
+  <div class="wrap">
+    <span>© 2026 Viviane Franco · Consultoria e formação em IA na educação</span>
+    <span><a href="https://www.linkedin.com/in/viviane-francos/" target="_blank" rel="noopener">LinkedIn</a> &nbsp; <a href="https://github.com/vivianefranco" target="_blank" rel="noopener">GitHub</a> &nbsp; <a href="mailto:vivianefrancodasilva@gmail.com">E-mail</a></span>
+  </div>
 </footer>
-
-<script>
-    function handlePhotoError() {
-        document.getElementById('profileImg').style.display = 'none';
-        document.getElementById('profileFallback').style.display = 'flex';
-    }
-</script>
 </body>
 </html>

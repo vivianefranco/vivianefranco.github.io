@@ -1,70 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog | Viviane Franco</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235b2d82'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='30' fill='%23d4a853'%3EVF%3C/text%3E%3C/svg%3E">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
-    <style>
-        :root { --ink: #1a1025; --cream: #faf7f2; --mist: #f0ebe3; --plum: #5b2d82; --violet: #7c3db8; --rose: #c96a9b; --gold: #d4a853; --text-soft: #6b5f7a; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        ::selection { background: var(--rose); color: white; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
-        body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.4; }
-        
-        .top-bar { padding: 30px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--mist); }
-        .top-bar a { text-decoration: none; color: var(--ink); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; transition: color 0.3s; }
-        .top-bar a:hover { color: var(--plum); }
-        
-        .blog-header { max-width: 800px; margin: 80px auto 40px; padding: 0 40px; text-align: center; }
-        .blog-header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2.5rem, 5vw, 4rem); color: var(--ink); margin-bottom: 16px; }
-        .blog-header p { color: var(--text-soft); font-size: 1.1rem; line-height: 1.6; max-width: 600px; margin: 0 auto; }
-
-        .blog-list { max-width: 800px; margin: 0 auto; padding: 40px 40px 100px; display: flex; flex-direction: column; gap: 40px; }
-        .article-card { text-decoration: none; color: inherit; display: block; padding: 30px; border-radius: 12px; border: 1px solid transparent; transition: all 0.3s ease; }
-        .article-card:hover { background: white; border-color: var(--mist); transform: translateY(-4px); box-shadow: 0 12px 30px rgba(91,45,130,0.06); }
-        .article-meta { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rose); margin-bottom: 12px; display: flex; gap: 12px; }
-        .article-meta span { color: var(--text-soft); font-weight: 400; }
-        .article-title { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--ink); margin-bottom: 12px; line-height: 1.2; }
-        .article-excerpt { color: var(--text-soft); font-size: 1rem; line-height: 1.7; margin-bottom: 16px; }
-        .read-more { font-size: 0.8rem; font-weight: 600; color: var(--plum); display: inline-flex; align-items: center; gap: 6px; }
-        .read-more svg { transition: transform 0.3s; }
-        .article-card:hover .read-more svg { transform: translateX(4px); }
-            .article-soon { opacity: 0.6; cursor: default; }
-        .article-soon:hover { background: transparent !important; border-color: transparent !important; transform: none !important; box-shadow: none !important; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blog | Viviane Franco</title>
+<meta name="description" content="Textos sobre IA na educação, design instrucional e o mestrado em Informática.">
+<meta name="author" content="Viviane Franco">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Blog | Viviane Franco">
+<meta property="og:description" content="Textos sobre IA na educação, design instrucional e o mestrado em Informática.">
+<meta property="og:url" content="https://vivianefranco.github.io/blog.html">
+<meta property="og:image" content="https://vivianefranco.github.io/images/ciaed-palco.jpg">
+<meta name="theme-color" content="#23204a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2323204a'/%3E%3Ctext x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial,sans-serif' font-weight='700' font-size='30' fill='%23ffffff'%3EVF%3C/text%3E%3Cpath d='M12 50 L52 46' stroke='%23c8195f' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
-    <div class="top-bar">
-        <a href="index.html">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            Voltar ao Portfólio
-        </a>
-        <span style="font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-soft);">Viviane Franco</span>
-    </div>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<header class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="index.html">Viviane Franco<span>.</span></a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="index.html#para-quem">Para quem</a>
+      <a href="index.html#servicos">Serviços</a>
+      <a href="index.html#resultados">Resultados</a>
+      <a href="index.html#sobre">Sobre</a>
+      <a href="blog.html">Blog</a>
+      <a class="btn btn-primary" href="mailto:vivianefrancodasilva@gmail.com?subject=Conversa%20sobre%20IA%20na%20educa%C3%A7%C3%A3o">Agendar conversa</a>
+    </nav>
+  </div>
+</header>
 
-    <div class="blog-header">
-        <h1>Blog & Reflexões</h1>
-        <p>Anotações sobre minha jornada no mestrado, transição de carreira para tecnologia, engenharia de prompt e a interseção entre linguagem e inteligência artificial.</p>
-    </div>
-
-    <div class="blog-list">
-        <!-- Artigo 1 -->
-        <a href="post.html" class="article-card">
-            <div class="article-meta">Inteligência Artificial <span>•</span> 12 Set 2026 <span>•</span> 5 min de leitura</div>
-            <h2 class="article-title">Por que profissionais de Educação são peças-chave no desenvolvimento de IA</h2>
-            <p class="article-excerpt">A transição de carreira não é um recomeço do zero, mas uma recontextualização de habilidades. Descubra como pedagogia, design instrucional e curadoria de conteúdo são diferenciais competitivos em times de tecnologia.</p>
-            <div class="read-more">Ler artigo <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-        </a>
-
-        <!-- Artigo 2 (em produção) -->
-        <div class="article-card article-soon" aria-disabled="true">
-            <div class="article-meta">Mestrado <span>•</span> Em breve</div>
-            <h2 class="article-title">Estruturando meu ambiente de estudos para o Mestrado em Informática</h2>
-            <p class="article-excerpt">Um guia prático sobre as ferramentas, fluxos de automação e métodos de organização que estou utilizando para conciliar pesquisa acadêmica e desenvolvimento de software.</p>
-            <div class="read-more">Em breve</div>
-        </div>
-    </div>
+<main id="conteudo">
+<div class="page-head">
+  <div class="wrap">
+    <h1>Blog</h1>
+    <p class="lead">Textos sobre IA na educação, design instrucional e o que estou aprendendo no mestrado.</p>
+  </div>
+</div>
+<div class="wrap" style="padding-bottom:90px">
+  <ul class="post-list">
+    <li>
+      <p class="meta">12 set. 2026 · 5 min de leitura</p>
+      <h2><a href="post.html">Por que profissionais de educação são peças-chave no desenvolvimento de IA</a></h2>
+      <p>Pedagogia, design instrucional e curadoria de conteúdo são diferenciais para quem trabalha com IA.</p>
+    </li>
+    <li class="soon">
+      <p class="meta">Em breve</p>
+      <h2>Estruturando meu ambiente de estudos para o mestrado em Informática</h2>
+      <p>Ferramentas, automações e métodos de organização para conciliar pesquisa acadêmica e desenvolvimento.</p>
+    </li>
+  </ul>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <span>© 2026 Viviane Franco · Consultoria e formação em IA na educação</span>
+    <span><a href="https://www.linkedin.com/in/viviane-francos/" target="_blank" rel="noopener">LinkedIn</a> &nbsp; <a href="https://github.com/vivianefranco" target="_blank" rel="noopener">GitHub</a> &nbsp; <a href="mailto:vivianefrancodasilva@gmail.com">E-mail</a></span>
+  </div>
+</footer>
 </body>
 </html>
