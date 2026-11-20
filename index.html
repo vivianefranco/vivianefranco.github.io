@@ -1,11 +1,20 @@
-Peço desculpas pelo problema! Aqui está o código HTML completo e corrigido, pronto para uso:
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viviane Franco | Mestranda em Informática & Especialista em IA</title>
-    <meta name="description" content="Viviane Franco - Mestranda em Informática em transição para a área de Tecnologia. Especialista em unir linguagem, educação e Inteligência Artificial Generativa para construir soluções inovadoras.">
+    <title>Viviane Franco | IA aplicada à Educação</title>
+    <meta name="description" content="Viviane Franco — designer instrucional e mestranda em Informática na UNIRIO. Desenvolvo ferramentas de IA generativa para produção de conteúdo educacional e aprendizagem corporativa.">
+    <meta name="author" content="Viviane Franco">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Viviane Franco | IA aplicada à Educação">
+    <meta property="og:description" content="Designer instrucional e mestranda em Informática (UNIRIO). Ferramentas de IA generativa para produção de conteúdo educacional e aprendizagem corporativa.">
+    <meta property="og:url" content="https://vivianefranco.github.io/">
+    <meta property="og:image" content="https://vivianefranco.github.io/images/profile.jpg">
+    <meta name="theme-color" content="#1a1025">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235b2d82'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='30' fill='%23d4a853'%3EVF%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -397,6 +406,26 @@ Peço desculpas pelo problema! Aqui está o código HTML completo e corrigido, p
         }
         .footer-copy { margin-top: 60px; color: rgba(255,255,255,0.2); font-size: 0.78rem; letter-spacing: 0.1em; }
 
+        .project-badge {
+            display: inline-block; vertical-align: middle; margin-left: 8px;
+            font-size: 0.62rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--ink); background: var(--gold); padding: 3px 9px; border-radius: 100px;
+        }
+        a:focus-visible, .project-item:focus-visible {
+            outline: 2px solid var(--gold); outline-offset: 3px;
+        }
+        .skip-link {
+            position: absolute; left: -9999px; top: 10px; z-index: 2000;
+            background: var(--gold); color: var(--ink); padding: 10px 16px; border-radius: 8px;
+            text-decoration: none; font-weight: 600;
+        }
+        .skip-link:focus { left: 10px; }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
+            .header-left > * { opacity: 1; }
+            html { scroll-behavior: auto; }
+        }
+
         @media (max-width: 900px) {
             header { grid-template-columns: 1fr; min-height: auto; }
             .top-nav { justify-content: center; padding: 20px; }
@@ -425,27 +454,28 @@ Peço desculpas pelo problema! Aqui está o código HTML completo e corrigido, p
     </style>
 </head>
 <body>
+<a href="#sobre" class="skip-link">Pular para o conteúdo</a>
 
 <header>
-    <nav class="top-nav">
+    <nav class="top-nav" aria-label="Navegação principal">
         <a href="#sobre">Sobre</a>
         <a href="#projetos">Projetos</a>
         <a href="blog.html">Blog</a>
         <a href="#contato">Contato</a>
     </nav>
     <div class="header-left">
-        <p class="eyebrow">Mestranda em Informática</p>
+        <p class="eyebrow">IA aplicada à Educação · Mestranda em Informática (UNIRIO)</p>
         <h1 class="header-name">Viviane<br><em>Franco</em></h1>
         <p class="header-tagline">
             <strong>Construindo a ponte entre Linguagem, Educação e Tecnologia.</strong> 
-            Aplico minha base em design instrucional e curadoria para desenvolver soluções de Inteligência Artificial, engenharia de prompt e automação de fluxos com rigor técnico e clareza narrativa.
+            Sou designer instrucional na educação executiva da FGV e desenvolvo ferramentas de IA generativa que encurtam a produção de conteúdo educacional — de dias para minutos — sem abrir mão da qualidade pedagógica.
         </p>
         <div class="social-links">
-            <a href="https://github.com/vivianefranco" aria-label="GitHub">
+            <a href="https://github.com/vivianefranco" target="_blank" rel="noopener" aria-label="GitHub">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                 GitHub
             </a>
-            <a href="https://www.linkedin.com/in/viviane-francos/" aria-label="LinkedIn">
+            <a href="https://www.linkedin.com/in/viviane-francos/" target="_blank" rel="noopener" aria-label="LinkedIn">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                 LinkedIn
             </a>
@@ -459,7 +489,7 @@ Peço desculpas pelo problema! Aqui está o código HTML completo e corrigido, p
         <div class="profile-container" id="profileContainer">
             <div class="profile-ring">
                 <div class="profile-ring-inner">
-                    <img src="profile.png" alt="Foto de Viviane Franco" class="profile-img" id="profileImg" onerror="handlePhotoError()">
+                    <img src="images/profile.jpg" alt="Foto de Viviane Franco" class="profile-img" width="480" height="640" decoding="async" id="profileImg" onerror="handlePhotoError()">
                     <div class="profile-fallback" id="profileFallback" aria-label="Viviane Franco">
                         <span class="profile-fallback-initials">VF</span>
                     </div>
@@ -478,19 +508,19 @@ Peço desculpas pelo problema! Aqui está o código HTML completo e corrigido, p
             <div class="sobre-text">
                 <h2 class="section-title">Onde a <em>pedagogia</em> encontra o código</h2>
                 <p>
-                    Atualmente sou <strong>mestranda em Informática</strong>, em um movimento estratégico de transição da área de Educação para Tecnologia. Minha trajetória em Letras, Design Instrucional e Liderança (FGV) me concedeu uma base única: entendo como as pessoas aprendem, como a linguagem estrutura o pensamento e como escalar processos com rigor de qualidade.
+                    Sou <strong>mestranda em Informática na UNIRIO</strong>, onde pesquiso o uso de Inteligência Artificial no design instrucional de cursos executivos a distância. Minha formação em Letras e minha atuação em Design Instrucional na FGV me deram uma base única: entendo como as pessoas aprendem, como a linguagem estrutura o pensamento e como escalar processos com rigor de qualidade.
                 </p>
                 <p>
                     Hoje, aplico esse repertório para <strong>desenvolver e curar soluções de Inteligência Artificial</strong>. Atuo na interseção entre engenharia de software e comunicação, criando fluxos de automação, engenharia de prompt avançada e sistemas de validação de LLMs que exigem tanto precisão técnica quanto clareza narrativa.
                 </p>
                 <p>
-                    Acredito que a tecnologia mais poderosa é aquela que consegue traduzir complexidade em acessibilidade. Meu objetivo é contribuir para times de produto, IA e desenvolvimento, trazendo uma visão humanizada, estruturada e orientada a dados.
+                    Acredito que a tecnologia mais poderosa é aquela que consegue traduzir complexidade em acessibilidade. Meu objetivo é levar a IA para a educação corporativa e para times de aprendizagem de forma responsável — com revisão humana, foco em quem aprende e resultados mensuráveis.
                 </p>
             </div>
             <div class="sobre-sidebar">
                 <div class="stat-item">
                     <div class="stat-number">MSc</div>
-                    <div class="stat-label">Mestranda em Informática</div>
+                    <div class="stat-label">Mestranda em Informática · UNIRIO</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">12+</div>
@@ -498,7 +528,7 @@ Peço desculpas pelo problema! Aqui está o código HTML completo e corrigido, p
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">IA</div>
-                    <div class="stat-label">Foco em Automação e LLMs</div>
+                    <div class="stat-label">Pesquisa: IA no Design Instrucional</div>
                 </div>
             </div>
         </div>
@@ -569,12 +599,15 @@ Peço desculpas pelo problema! Aqui está o código HTML completo e corrigido, p
         <div class="section-label">Habilidades</div>
         <h2 class="section-title"><em>Stack</em> e Competências</h2>
         <div class="skills-grid">
-            <div class="skill-tag">Python & Manipulação de Dados</div>
+            <div class="skill-tag">Python &amp; Manipulação de Dados</div>
             <div class="skill-tag">Engenharia de Prompt Avançada</div>
             <div class="skill-tag">Integração de APIs (LLMs)</div>
+            <div class="skill-tag">RAG e Grounding</div>
+            <div class="skill-tag">Streamlit</div>
             <div class="skill-tag">Curadoria e Validação de IA</div>
             <div class="skill-tag">Automação de Fluxos (n8n, Zapier)</div>
-            <div class="skill-tag">Design Instrucional & UX Writing</div>
+            <div class="skill-tag">Design Instrucional &amp; UX Writing</div>
+            <div class="skill-tag">Metodologias Ativas</div>
             <div class="skill-tag">Gestão Ágil de Projetos</div>
             <div class="skill-tag">Comunicação Técnica</div>
         </div>
@@ -588,7 +621,7 @@ Peço desculpas pelo problema! Aqui está o código HTML completo e corrigido, p
             <a href="projeto-revisor.html" class="project-item">
                 <div class="project-num">01</div>
                 <div>
-                    <div class="project-title">Revisor Automático de Textos com IA</div>
+                    <div class="project-title">DocuMind AI — Revisor Automático de Textos</div>
                     <div class="project-desc">Sistema em Python que alia NLP à manipulação avançada de documentos (.docx), resolvendo a perda de formatação em revisões de textos longos via LLMs.</div>
                 </div>
                 <div class="project-cta">
@@ -597,26 +630,38 @@ Peço desculpas pelo problema! Aqui está o código HTML completo e corrigido, p
                 </div>
             </a>
 
-            <a href="#" class="project-item">
+            <a href="projeto2.html" class="project-item">
                 <div class="project-num">02</div>
                 <div>
                     <div class="project-title">Transformador de Transcrições de Videoaulas</div>
                     <div class="project-desc">Aplicação baseada em IA para adaptação automática de transcrições brutas em resumos, artigos e roteiros estruturados.</div>
                 </div>
                 <div class="project-cta">
-                    <span>Em breve</span>
+                    <span>Ver Case Study</span>
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </div>
             </a>
 
-            <a href="#" class="project-item">
+            <a href="projeto3.html" class="project-item">
                 <div class="project-num">03</div>
                 <div>
                     <div class="project-title">Gerador de Questões para Pós-Graduação</div>
                     <div class="project-desc">Sistema escalável para geração de questões de múltipla escolha com gabarito e justificativa, validado por especialistas da área.</div>
                 </div>
                 <div class="project-cta">
-                    <span>Em breve</span>
+                    <span>Ver Case Study</span>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+
+            <a href="caselab.html" class="project-item">
+                <div class="project-num">04</div>
+                <div>
+                    <div class="project-title">CaseLab — Aprender resolvendo um problema real <span class="project-badge">Novo</span></div>
+                    <div class="project-desc">Plataforma em Streamlit em que a IA rascunha trilhas de aprendizagem a partir de um problema real da equipe, faz mentoria individual e sintetiza a turma — sempre com revisão humana da área de T&amp;D.</div>
+                </div>
+                <div class="project-cta">
+                    <span>Ver Case Study</span>
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </div>
             </a>
@@ -627,7 +672,7 @@ Peço desculpas pelo problema! Aqui está o código HTML completo e corrigido, p
 
 <footer id="contato">
     <p class="footer-title">Vamos construir algo juntos?</p>
-    <p class="footer-sub">Aberta a colaborações, oportunidades em Tech e projetos de IA.</p>
+    <p class="footer-sub">Aberta a colaborações, consultorias e projetos de IA na educação e na aprendizagem corporativa.</p>
     <a href="mailto:vivianefrancodasilva@gmail.com" class="contact-btn">Entre em Contato</a>
     <p class="footer-copy">© 2026 Viviane Franco — Todos os direitos reservados</p>
 </footer>
@@ -640,4 +685,3 @@ Peço desculpas pelo problema! Aqui está o código HTML completo e corrigido, p
 </script>
 </body>
 </html>
-

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog | Viviane Franco</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235b2d82'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='30' fill='%23d4a853'%3EVF%3C/text%3E%3C/svg%3E">
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
     <style>
         :root { --ink: #1a1025; --cream: #faf7f2; --mist: #f0ebe3; --plum: #5b2d82; --violet: #7c3db8; --rose: #c96a9b; --gold: #d4a853; --text-soft: #6b5f7a; }
@@ -30,6 +31,8 @@
         .read-more { font-size: 0.8rem; font-weight: 600; color: var(--plum); display: inline-flex; align-items: center; gap: 6px; }
         .read-more svg { transition: transform 0.3s; }
         .article-card:hover .read-more svg { transform: translateX(4px); }
+            .article-soon { opacity: 0.6; cursor: default; }
+        .article-soon:hover { background: transparent !important; border-color: transparent !important; transform: none !important; box-shadow: none !important; }
     </style>
 </head>
 <body>
@@ -55,13 +58,13 @@
             <div class="read-more">Ler artigo <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
         </a>
 
-        <!-- Artigo 2 -->
-        <a href="post.html" class="article-card">
-            <div class="article-meta">Mestrado <span>•</span> 28 Ago 2026 <span>•</span> 8 min de leitura</div>
+        <!-- Artigo 2 (em produção) -->
+        <div class="article-card article-soon" aria-disabled="true">
+            <div class="article-meta">Mestrado <span>•</span> Em breve</div>
             <h2 class="article-title">Estruturando meu ambiente de estudos para o Mestrado em Informática</h2>
             <p class="article-excerpt">Um guia prático sobre as ferramentas, fluxos de automação e métodos de organização que estou utilizando para conciliar pesquisa acadêmica e desenvolvimento de software.</p>
-            <div class="read-more">Ler artigo <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-        </a>
+            <div class="read-more">Em breve</div>
+        </div>
     </div>
 </body>
 </html>

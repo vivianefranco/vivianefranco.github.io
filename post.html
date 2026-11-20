@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Por que profissionais de Educação são peças-chave no desenvolvimento de IA | Viviane Franco</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235b2d82'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='30' fill='%23d4a853'%3EVF%3C/text%3E%3C/svg%3E">
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
     <style>
         :root { --ink: #1a1025; --cream: #faf7f2; --mist: #f0ebe3; --plum: #5b2d82; --violet: #7c3db8; --rose: #c96a9b; --gold: #d4a853; --text-soft: #6b5f7a; }
@@ -81,7 +82,9 @@
             <h2>Um exemplo prático em Python</h2>
             <p>Para ilustrar como essa mentalidade se aplica ao código, veja como estruturo uma chamada de API pensando na validação da saída:</p>
 
-<pre><code>import openai
+<pre><code>from openai import OpenAI
+
+client = OpenAI()  # lê a chave da variável de ambiente OPENAI_API_KEY
 
 def gerar_conteudo_validado(topico):
     prompt_sistema = """
@@ -90,8 +93,8 @@ def gerar_conteudo_validado(topico):
     Regra de ouro: Não use jargões técnicos sem defini-los primeiro.
     """
     
-    resposta = openai.ChatCompletion.create(
-        model="gpt-4",
+    resposta = client.chat.completions.create(
+        model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": prompt_sistema},
             {"role": "user", "content": f"Explique: {topico}"}
